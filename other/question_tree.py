@@ -9,7 +9,7 @@ class GameInfo:
 	def __init__(self):
 		# sql
 		connector = sqlite3.connect("other/choice_tree.db")
-		self.sql = connector.cursor()
+		self.__sql = connector.cursor()
 
 		# colours
 		self.col = {
@@ -34,7 +34,7 @@ class GameInfo:
 		}
 
 		# relationship levels
-		self.rel = {
+		self.__rel = {
 			"mia": 0,
 			"p1": 0,
 			"peter": 0,
@@ -47,27 +47,110 @@ class GameInfo:
 		}
 
 		# names
-		self.mia = "Narrator"
-		self.p1 = "Player 1"
-		self.p2 = "Player 2"
+		self.__p1_name = "Player 1"
+		self.__p2_name = "Player 2"
+		self.__transgenderfy("n", 1)
+		self.__transgenderfy("n", 2)
 
 		# carry-over variables
-		self.deal = "none"
-		self.opped = False
-		self.times_glitched = 0
+		self.__deal = "none"
+		self.__opped = False
+		self.__times_glitched = 0
 		self.act = 1
-		self.completed_endings = []
+		self.__completed_endings = []
 
 		# single-playthrough variables
-		self.items = []
-		self.recent_end = "none"
-		self.gary_knows_name = False
+		self.__next_bfly_effect = 0
+		self.__items = []
+		self.__recent_end = "none"
+		self.__gary_knows_name = False
 
+	# basic functions
 	def na(self, tree):
 		pass
 
+	def __transgenderfy(self, gender: str, player: int):
+		# changes the player's pronouns
+		if gender == "f":
+			temp = {
+				"they": "she",
+				"them": "her",
+				"they're": "she's",
+				"their": "her",
+				"theirs": "hers",
+				"themself": "herself",
+				"person": "girl",
+				"They": "She",
+				"Them": "Her",
+				"They're": "She's",
+				"Their": "Her",
+				"Theirs": "Hers",
+				"Themself": "Herself",
+				"Person": "Girl",
+				"THEY": "SHE",
+				"THEM": "HER",
+				"THEY'RE": "SHE'S",
+				"THEIR": "HER",
+				"THEIRS": "HERS",
+				"THEMSELF": "HERSELF",
+				"PERSON": "GIRL"
+			}
+		elif gender == "m":
+			temp = {
+				"they": "he",
+				"them": "him",
+				"they're": "he's",
+				"their": "his",
+				"theirs": "his",
+				"themself": "himself",
+				"person": "guy",
+				"They": "He",
+				"Them": "Him",
+				"They're": "He's",
+				"Their": "His",
+				"Theirs": "His",
+				"Themself": "Himself",
+				"Person": "Guy",
+				"THEY": "HE",
+				"THEM": "HIM",
+				"THEY'RE": "HE'S",
+				"THEIR": "HIS",
+				"THEIRS": "HIS",
+				"THEMSELF": "HIMSELF",
+				"PERSON": "GUY"
+			}
+		else:
+			temp = {
+				"they": "they",
+				"them": "them",
+				"they're": "they're",
+				"their": "their",
+				"theirs": "theirs",
+				"themself": "themself",
+				"person": "person",
+				"They": "They",
+				"Them": "Them",
+				"They're": "They're",
+				"Their": "Their",
+				"Theirs": "Theirs",
+				"Themself": "Themself",
+				"Person": "Person",
+				"THEY": "THEY",
+				"THEM": "THEM",
+				"THEY'RE": "THEY'RE",
+				"THEIR": "THEIR",
+				"THEIRS": "THEIRS",
+				"THEMSELF": "THEMSELF",
+				"PERSON": "PERSON"
+			}
+
+		if player == 1:
+			self.__p1_pronouns = temp
+		else:
+			self.__p2_pronouns = temp
+
 	def fetch_db(self, sql_code: str, apostrophe=False):
-		temp = str(self.sql.execute(sql_code).fetchone()).replace("(", "").replace(")", "").strip("'")[:-1]
+		temp = str(self.__sql.execute(sql_code).fetchone()).replace("(", "").replace(")", "").strip("'")[:-1]
 		if not apostrophe:
 			temp = temp.replace("'", "")
 		if len(temp.split(", ")) <= 1:
@@ -77,19 +160,164 @@ class GameInfo:
 	def generate(self, question):
 		# generating branches
 		if len(question.questions) == 0:
+			if len(question.choice_codes) > len(question.button_codes):
+				question.choice_codes[0] = question.choice_codes[self.__next_bfly_effect]
 			for c in question.button_codes:
 				question.addResponse(c, Question(c))
 
+	def word_replacer(self, old_word: str, new_word: str, text: str):
+		temp = text.index(old_word)
+		if temp == 0:
+			return new_word + text[len(old_word) + 4:]
+		else:
+			return text[:temp] + new_word + text[temp + len(old_word):]
+
+	def formatter(self, text: str, char: str, new_alpha: list):
+		alphabet = list("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
+		new_text = text
+		while char + "{" in new_text:
+			start = 0
+			end = -1
+			for i in range(0, len(new_text) - 1):
+				if new_text[i: i + 2] == char + "{":
+					start = i
+					i += 2
+				if new_text[i] == "}":
+					end = i
+					break
+			temp = ""
+
+			# make more efficient somehow eventually
+			for c in new_text[start + 2: end]:
+				if c in alphabet:
+					loc = alphabet.index(c)
+					temp += new_alpha[loc][random.randint(0, len(new_alpha[loc]) - 1)]
+				else:
+					temp += c
+
+			new_text = self.word_replacer(new_text[start: end], temp, new_text).replace("}", "")
+		return new_text
+
 	def format(self, text: str, speech_marks=True):
 		"""
-		Formats the text correctly
-		Bold: B{}
+		Formats the text correctly.
+
+		Formatting codes:
 		Glitched: G{}
+		Variables: V{}
+		P1 Pronouns: P1{}
+		P2 Pronouns: P2{}
 		"""
+
+		# alphabets
+		glitched_letters = [
+			list("AĀĂĄȀȂȦÀÁÃÄÅǍǞǠǺȺӐӒΆἈἉἊἋἌἍἎἏᾈᾉᾊᾋᾌᾍᾎᾏᾸᾹᾺΆᾼ"),
+			list("BƁƂɃᛒḂḄꞖḆꞴ"),
+			list("CĆĈƇʗℂÇĊČḈℭꞒꜾ"),
+			list("DĐƉⅅĎƊḊḌḎḐḒ"),
+			list("EĒĔĖĘȄȆȨɆÈÉÊËĚƎ"),
+			list("FƑℲḞꞘꟻ"),
+			list("GĠĢƓ⅁ĜĞǤǦǴḠ𝔾𝕲"),
+			list("HĤĦȞᚻᚺḢḤḦḨḪℌℍⱧꞪＨ𝓗"),
+			list("IĨİƗȈÌÍÎÏĪĬĮǏȊ"),
+			list("JĴ𝔍𝕁𝒥"),
+			list("KĶƘKǨḰḲḴⱩꝀꝂꝄꞢꞰ𝒦𝓚𝕂"),
+			list("LĹŁĽĻĿḶḸḺḼⱠⱢꝆꝈꞭ"),
+			list("MℳḾṀṂⱮꟽ𝓜𝔐𝕄"),
+			list("NŃŅŇȠℕÑƝǸṄṆṈṊ∏⋂ꞤꞐ"),
+			list("OŐȰÒÓÔÕÖØŌŎƟƠǑǪǬǾȌȎȪȬȮӦӨӪ"),
+			list("PℙƤṔṖⱣꝐꝒꝔꟼ𝓟"),
+			list("QɊℚ℺ꝘꝖ𝒬"),
+			list("RŔŖŘȐȒɌᚱṘṚṜⱤℝℜṞꝚꞦꭆ"),
+			list("SŠȘŚŜŞṤṢṠṦṨⱾꞨ"),
+			list("TŢŤŦƬƮȚȾᛏṪṬṮṰ𝒯𝕋"),
+			list("UŨŰȔŲɄȖÙÚÛÜŪŬŮƯǓǕǗǙǛ"),
+			list("VṼṾ𝒱𝕍"),
+			list("WŴẀẂẄẆẈⱲ𝒲𝕎"),
+			list("X✘ẊẌ𝒳𝔛𝕏"),
+			list("YŶŸȲÝ⅄ƳɎẎỲỴỶỸ𝕐"),
+			list("ZŹȤℤŻŽƵẐẒẔⱿⱫ𝒵"),
+			list("aāăąȁȃȧɐàáâãäåǎǟǡǻӑӓ"),
+			list("bƀƃɓᵬᶀḃḅḇ"),
+			list("cćĉƈɕↄçċčȼḉꜿꞓꞔ"),
+			list("dđȡɖɗƌďᶑᶁᵭḋḍḏḑḓ"),
+			list("eēĕėęȅȇȩɇɘèéêëěǝ"),
+			list("fƒᵮᶂḟꞙ"),
+			list("gġģɠĝğǥǧǵᶃᵷḡꞡꬶ"),
+			list("hĥħɦȟḣḥḧḩḫẖⱨꞕ𝕙"),
+			list("iĩıȉɨìíîïīĭįǐȋ"),
+			list("jĵȷɉĵǰɟʝ𝕛"),
+			list("kķƙǩʞḱᶄḳⱪḵꝁꝃꝅꞣ𐊋𝕜"),
+			list("lŀłȴĺļľƚɫɬᛚᶅᶪḹḻḽⱡꝇꞎꬷꬸ"),
+			list("mɱɰɯᵯᶆḿṁṃꬺ𝕞"),
+			list("nńņňŉȵɲɳñƞǹṅṇṉṋꞑꞥꬻ"),
+			list("oőȱɵòóôõöøōŏơǒǫǭǿȍȏȫȭȯӧөӫ"),
+			list("pƥᵱᵽᶈṕṗꝑꝓꝕ𝕡"),
+			list("qɋʠꝗꝙ𝕢"),
+			list("rŕŗřȑȓɹɍɻɾᶉṙṛṝṟꞧꭉꭊ"),
+			list("sšșʂśŝşȿᶊṡṣṥṧṩꞩ"),
+			list("tţťŧȶʇʈƫƭțṫᶵṭṯṱᵵẗⱦ𝖙𝕥"),
+			list("uũűųȕȗʉùúûüūŭůưǔǖǘǚǜߎ"),
+			list("vᶌṽṿⱴⱱꝟ𝕧"),
+			list("wŵẁẃẅẇẉẘ𝕨"),
+			list("xᶍẋẍꭖꭘꭗꭙ𝓍𝕩"),
+			list("yŷȳýÿƴɏʎẏẙỳỵỷỹỿ𝕪"),
+			list("zȥɀʐʑźżžƶᵶᶎẑẓẕⱬ𝕫")
+		]
+
+		# apostropher fixer
 		new_text = text.replace("\\", "'").replace("''", "'")
+
+		# text formatting
+		new_text = self.formatter(new_text, "G", glitched_letters)
+
+		# names
+		if "V{p1_name}" in new_text:
+			new_text = self.word_replacer("V{p1_name}", self.__p1_name, new_text)
+		if "V{p2_name}" in new_text:
+			new_text = self.word_replacer("V{p2_name}", self.__p2_name, new_text)
+
+		# pronouns
+		for (p, q) in self.__p1_pronouns.items():
+			new_p = "P1{" + p + "}"
+			if new_p in new_text:
+				new_text = self.word_replacer(new_p, q, new_text)
+		for (p, q) in self.__p2_pronouns.items():
+			new_p = "P2{" + p + "}"
+			if new_p in new_text:
+				new_text = self.word_replacer(new_p, q, new_text)
+
+		# sql error fixer
 		if not speech_marks:
 			new_text = new_text.strip('"')
 		return new_text
+
+	# choice functions
+	def AAF1(self):
+		self.__rel["peter"] -= 2
+
+	def AAK1(self):
+		self.__rel["peter"] += 1
+
+	def AAL1(self):
+		self.__rel["peter"] += 2
+
+	def AAX1(self):
+		self.__rel["gary"] -= 2
+
+	def ABA1(self):
+		self.__rel["gary"] -= 5
+		self.__items.append("money")
+
+	def ABC1(self):
+		self.__rel["gary"] += 2
+		self.__items.append("money")
+
+	def ABN1(self):
+		if self.__rel["gary"] > 0:
+			self.__next_bfly_effect = 0
+		else:
+			self.__next_bfly_effect = 1
 
 g = GameInfo()
 
@@ -98,10 +326,15 @@ class Question:
 	def __init__(self, code="AAA0"):
 		# setting variables
 		code = code.replace(",", "")
-		self.speaker = g.fetch_db(f"SELECT name FROM Choices WHERE code = '{code}'").replace(",", "") + ":"
+		self.speaker = g.fetch_db(f"SELECT name FROM Choices WHERE code = '{code}'").strip(",")
 		if self.speaker == ":":
 			self.speaker = ""
-		self.s_col = g.col[g.fetch_db(f"SELECT colour FROM Choices WHERE code = '{code}'").replace(",", "")]
+		else:
+			self.speaker = g.format(self.speaker) + ":"
+		try:
+			self.s_col = g.col[g.fetch_db(f"SELECT colour FROM Choices WHERE code = '{code}'").replace(",", "")]
+		except:
+			self.s_col = g.col["white"]
 		self.f = g.fetch_db(f"SELECT function FROM Choices WHERE code = '{code}'").replace(",", "")
 		self.questions = {}
 
@@ -113,12 +346,18 @@ class Question:
 			bt1 = g.fetch_db(f"SELECT choice_codes FROM Choices WHERE choice_codes LIKE '%{code}%'").split(", ")
 			bt2 = g.fetch_db(f"SELECT button_codes FROM Choices WHERE choice_codes LIKE '%{code}%'").split(", ")
 			try:
-				bt3 = bt2[bt1.index(code + ",")][:-1]
-			except:
 				bt3 = bt2[bt1.index(code)]
+			except:
+				bt3 = bt2[0]
 			self.button_text = g.format(g.fetch_db(f"SELECT display_text FROM Buttons WHERE code = '{bt3}'", True))[:-1]
-			self.button_colour = g.col[g.fetch_db(f"SELECT colour FROM Buttons WHERE code = '{bt3}'", True)[:-1]]
-		self.button_codes = g.fetch_db(f"SELECT choice_codes FROM Choices WHERE code = '{code}'").split(", ")
+			try:
+				self.button_colour = g.col[g.fetch_db(f"SELECT colour FROM Buttons WHERE code = '{bt3}'", True)[:-1]]
+			except:
+				self.button_colour = g.col["white"]
+		temp = g.fetch_db(f"SELECT choice_codes FROM Choices WHERE code = '{code}'").split(", ")
+		temp2 = g.fetch_db(f"SELECT button_codes FROM Choices WHERE code = '{code}'").split(", ")
+		self.choice_codes = temp
+		self.button_codes = temp[:len(temp2)]
 
 		# aligning text
 		self.question = ""
@@ -152,6 +391,10 @@ class Question:
 			else:
 				for i in range(0, len(self.question) - len(self.speaker)):
 					self.speaker += " "
+		for i in range(len(self.speaker) // 18):
+			if self.speaker[-1] != " ":
+				break
+			self.speaker = self.speaker[:-1]
 
 	def addResponse(self, code: str, q):
 		self.questions[code] = q

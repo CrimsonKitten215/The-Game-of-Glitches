@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter.font import Font
 from question_tree import qtree, g
 
 class Hex:
@@ -42,7 +43,6 @@ class Window:
 		#Colour scheme
 		self.bg = "#000000"
 		self.fg = "#ffffff"
-		self.font = ("System", 20)
 		self.buttonContrast = 0.2
 		self.buttonBG = Hex.applyContrast(self.bg,self.fg,self.buttonContrast)
 		self.buttonFG = Hex.applyContrast(self.fg,self.bg,self.buttonContrast)
@@ -51,8 +51,26 @@ class Window:
 		self.window = tk.Tk()
 		self.window.title("The Game of Glitches")
 		self.window.config(bg=self.bg)
-		self.speaker = tk.Label(self.window, text="", bg=self.bg, fg=self.fg, font=("Fixedsys", 32))
-		self.question = tk.Label(self.window, text="", bg=self.bg, fg=self.fg,font=("Fixedsys", 32))
+
+		# fonts
+		self.font = Font(
+			family="Fixedsys",
+			size=32,
+			weight="normal"
+		)
+		self.button_font = Font(
+			family="Fixedsys",
+			size=20,
+			weight="normal"
+		)
+		self.name_font = Font(
+			family="Fixedsys",
+			size=25,
+			weight="bold"
+		)
+
+		self.speaker = tk.Label(self.window, text="", bg=self.bg, fg=self.fg, font=self.name_font)
+		self.question = tk.Label(self.window, text="", bg=self.bg, fg=self.fg, font=self.font)
 		self.speaker.pack()
 		self.question.pack()
 		self.buttons = []
@@ -62,7 +80,7 @@ class Window:
 		self.show(initialQ)
 
 	def makeButton(self, text, command, colour: str):
-		return tk.Button(self.window, text=text, command=command, bg=self.buttonBG, fg=colour,font=self.font)
+		return tk.Button(self.window, text=text, command=command, bg=self.buttonBG, fg=colour, font=self.button_font)
 
 	def makeCommand(self, question):
 		return lambda: self.show(question)
