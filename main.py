@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter.font import Font
-from question_tree import qtree, g
+from other.question_tree import qtree, g
 
 class Hex:
 	"""
@@ -90,11 +90,9 @@ class Window:
 		if question.f == "quit":
 			exit()
 		try:
-			temp = getattr(g, question.f)(question)
+			getattr(g, question.f)()
 		except:
-			temp = None
-		if temp != None:
-			question = temp
+			pass
 		g.generate(question)
 
 		# clearing old screen

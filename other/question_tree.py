@@ -8,7 +8,7 @@ class GameInfo:
 	"""
 	def __init__(self):
 		# sql
-		connector = sqlite3.connect("other/choice_tree.db")
+		connector = sqlite3.connect("sql/choice_tree.db")
 		self.__sql = connector.cursor()
 
 		# colours
@@ -46,10 +46,10 @@ class GameInfo:
 			"mikayla": 0
 		}
 
-		# names
-		self.__p1_name = "Player 1"
+		# names (just some test stuff that'll be replaced later)
+		self.__p1_name = "Stella"
 		self.__p2_name = "Player 2"
-		self.__transgenderfy("n", 1)
+		self.__transgenderfy("f", 1)
 		self.__transgenderfy("n", 2)
 
 		# carry-over variables
@@ -66,7 +66,7 @@ class GameInfo:
 		self.__gary_knows_name = False
 
 	# basic functions
-	def na(self, tree):
+	def na(self):
 		pass
 
 	def __transgenderfy(self, gender: str, player: int):
@@ -160,9 +160,9 @@ class GameInfo:
 	def generate(self, question):
 		# generating branches
 		if len(question.questions) == 0:
-			if len(question.choice_codes) > len(question.button_codes):
-				question.choice_codes[0] = question.choice_codes[self.__next_bfly_effect]
-			for c in question.button_codes:
+			if len(question.button_codes) < len(question.choice_codes):
+				question.choice_codes = [question.choice_codes[self.__next_bfly_effect]]
+			for c in question.choice_codes:
 				question.addResponse(c, Question(c))
 
 	def word_replacer(self, old_word: str, new_word: str, text: str):
@@ -202,11 +202,12 @@ class GameInfo:
 		"""
 		Formats the text correctly.
 
-		Formatting codes:
+		Formatting codes/keys:
 		Glitched: G{}
 		Variables: V{}
 		P1 Pronouns: P1{}
 		P2 Pronouns: P2{}
+		): ]
 		"""
 
 		# alphabets
@@ -265,8 +266,14 @@ class GameInfo:
 			list("zȥɀʐʑźżžƶᵶᶎẑẓẕⱬ𝕫")
 		]
 
-		# apostropher fixer
+		# random character fixers
 		new_text = text.replace("\\", "'").replace("''", "'")
+		if not speech_marks:
+			new_text = new_text.strip('"')
+		new_text = new_text.replace("]", ")")
+		if "£" in new_text:
+			temp = new_text.index("£")
+			new_text = new_text[:temp - 1] + new_text[temp:]
 
 		# text formatting
 		new_text = self.formatter(new_text, "G", glitched_letters)
@@ -287,9 +294,6 @@ class GameInfo:
 			if new_p in new_text:
 				new_text = self.word_replacer(new_p, q, new_text)
 
-		# sql error fixer
-		if not speech_marks:
-			new_text = new_text.strip('"')
 		return new_text
 
 	# choice functions
@@ -319,6 +323,17 @@ class GameInfo:
 		else:
 			self.__next_bfly_effect = 1
 
+	def ABT1(self):
+		self.__gary_knows_name = True
+
+	def ABU1(self):
+		self.ABT1()
+		self.__rel["gary"] -= 1
+
+	def ABW1(self):
+		self.__rel["gary"] -= 3
+
+
 g = GameInfo()
 
 
@@ -345,10 +360,18 @@ class Question:
 		else:
 			bt1 = g.fetch_db(f"SELECT choice_codes FROM Choices WHERE choice_codes LIKE '%{code}%'").split(", ")
 			bt2 = g.fetch_db(f"SELECT button_codes FROM Choices WHERE choice_codes LIKE '%{code}%'").split(", ")
+
+			# stupid annoying required fix for some reason
+			if code == "AAU1":
+				bt2[0] = "AAC1"
+			elif code == "ABT1":
+				bt[0] = "AAR1"
+
 			try:
 				bt3 = bt2[bt1.index(code)]
 			except:
 				bt3 = bt2[0]
+
 			self.button_text = g.format(g.fetch_db(f"SELECT display_text FROM Buttons WHERE code = '{bt3}'", True))[:-1]
 			try:
 				self.button_colour = g.col[g.fetch_db(f"SELECT colour FROM Buttons WHERE code = '{bt3}'", True)[:-1]]
@@ -357,7 +380,7 @@ class Question:
 		temp = g.fetch_db(f"SELECT choice_codes FROM Choices WHERE code = '{code}'").split(", ")
 		temp2 = g.fetch_db(f"SELECT button_codes FROM Choices WHERE code = '{code}'").split(", ")
 		self.choice_codes = temp
-		self.button_codes = temp[:len(temp2)]
+		self.button_codes = temp2
 
 		# aligning text
 		self.question = ""

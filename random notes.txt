@@ -1,0 +1,11 @@
+Character Colours:
+Mia/Narrator = #ff0000-#00ffff depending on mood. Go to https://color.adobe.com/create/color-wheel for help with this.
+Player 1 = #21a617
+Player 2 = #6e6e6e normally, #558057 when possessed
+Peter = #007ade normally, #3c7ade when glitched
+Jamie = #ffff00
+Gary = #a00a0a
+Ryan = #0000b3
+Matt = #ff6e1f
+Darren = #ff6eff
+Mɨkǟylǟ = #8200ff

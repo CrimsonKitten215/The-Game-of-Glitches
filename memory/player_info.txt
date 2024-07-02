@@ -1,0 +1,8 @@
+P1 Name
+Stella
+P1 Gender
+f
+P2 Name
+Player 2
+P2 Gender
+n
