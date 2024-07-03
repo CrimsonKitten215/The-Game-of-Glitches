@@ -365,7 +365,7 @@ class Question:
 			if code == "AAU1":
 				bt2[0] = "AAC1"
 			elif code == "ABT1":
-				bt[0] = "AAR1"
+				bt2[0] = "AAR1"
 
 			try:
 				bt3 = bt2[bt1.index(code)]
