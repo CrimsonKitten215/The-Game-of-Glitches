@@ -95,7 +95,7 @@ VALUES
     ('ACS1', 'Narrator', 'mia', 'You decide to stay where you are. A rather boring choice if you ask me...', 'na', 'ACT1', 'AAB0'),
     ('ACT1', 'Narrator', 'mia', 'Eventually, Gary comes back, alone this time.', 'na', 'ACU1', 'AAB0'),
     ('ACU1', 'Gary', 'gary', 'Oh. You actually listened to us and stayed here? Somehow I expected something different... Weird.', 'na', 'ACV1', 'AAB0'),
-    ('ACV1', 'Gary', 'gary', 'So, I''ve finally got an idea of what to do with you...', 'ABN1', 'ACW1, ACZ1', 'ABK1'),
+    ('ACV1', 'Gary', 'gary', 'So, I''ve finally got an idea of what to do with you...', 'ABN1', 'ACW1, ACZ1', 'ABQ1'),
     ('ACW1', 'Narrator', 'mia', 'Gary cuts the ropes you are bound by and gives you a hand, before pulling you to your feet.', 'na', 'ACX1', 'ABM1'),
     ('ACX1', 'Gary', 'gary', 'Yeah. You''re a pretty cool person so we thought that you deserve to be set free. If you want, you can stay here - the rest of the world won''t last much longer anyway.', 'na', 'AC?1, ACY1', 'AAF0, ABP1'),
     ('ACY1', 'Narrator', 'mia', 'By the power of friendship, you somehow emotionally manipulated Gary and friends into letting you stay in their bunker after they nuked the planet, and survive it all. Congratulations because I honestly was going to have no way of beating this game, and just have every single option lead to your demise someway or another... G{just like real life!}', 'na', 'ADA1', 'AAB0'),
@@ -151,11 +151,11 @@ VALUES
     ('ABJ1', '"Let''s each steal a plane and crash them into the Marina Towers!"', 'white'),
     ('ABK1', 'Stay there.', 'white'),
     ('ABL1', 'Escape.', 'white'),
-    ('ABK1', '"Oh, what?"', 'white'),
     ('ABM1', '"You''re letting me go?"', 'white'),
     ('ABN1', '"Wait, no!"', 'white'),
     ('ABO1', '"No. I still haven''t forgotten about you killing Peter!"', 'white'),
-    ('ABP1', '"Okay, thank you."', 'white');
+    ('ABP1', '"Okay, thank you."', 'white'),
+    ('ABQ1', '"Oh, what?"', 'white');
 
 -- Extra Notes:
 -- Line 77: AAF0 should be AAX1 in final version
