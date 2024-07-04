@@ -153,8 +153,6 @@ class GameInfo:
 		temp = str(self.__sql.execute(sql_code).fetchone()).replace("(", "").replace(")", "").strip("'")[:-1]
 		if not apostrophe:
 			temp = temp.replace("'", "")
-		if len(temp.split(", ")) <= 1:
-			return temp
 		return temp
 
 	def generate(self, question):
