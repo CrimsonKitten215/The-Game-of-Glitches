@@ -1,23 +1,40 @@
-Passive Ending
-Peace Ending
-Walk Alone Ending
-Altruist Ending 1.0
-Altruist Ending 2.0
-Betrayer Ending
-Cliché Ending
-Ruler of the Apocalypse Ending
-Mass Murderer Ending
-Escape Artist Ending
-Arsonist Ending
-Under the Radar Ending
 Imprisonment Ending
+0
 Apocalyptic Alliance Ending
+0
+Apathy's the Best Policy Ending
+0
 Revengers Ending
+0
 Admin Abuser Ending
-?
-?
-?
-?
-?
-?
-?
+0
+Triple Agent Ending
+0
+Double Agent Ending
+0
+Arsonist Ending
+0
+Under the Radar Ending
+0
+Mass Murderer Ending
+0
+Ruler of the Apocalypse Ending
+0
+Top Dog Ending
+0
+Cliché Ending
+0
+Betrayer Ending
+0
+Altruist Ending 1.0
+0
+Altruist Ending 2.0
+0
+Walk Alone Ending
+0
+Peace Ending
+0
+Pacifist Ending
+0
+Morally Grey Ending
+0

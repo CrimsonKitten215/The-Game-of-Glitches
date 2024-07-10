@@ -1,3 +1,11 @@
+Files:
+deaths_1.txt stores the act 1 death counts
+deaths_2.txt stores the act 2 death counts
+endings.txt stores the act 2 endings
+outcomes.txt stores the act 3 outcomes
+player_info.txt stores the act 1 and act 2-3 players' info such as their names and stuff
+carry_over_info.txt stores random stuff that needs to be remembered between playthroughs
+
 Character Colours:
 Mia/Narrator = #ff0000-#00ffff depending on mood. Go to https://color.adobe.com/create/color-wheel for help with this.
 Player 1 = #21a617

@@ -57,7 +57,6 @@ class GameInfo:
 		self.__opped = False
 		self.__times_glitched = 0
 		self.act = 1
-		self.__completed_endings = []
 
 		# single-playthrough variables
 		self.__next_bfly_effect = 0
