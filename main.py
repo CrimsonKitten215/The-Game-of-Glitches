@@ -50,6 +50,7 @@ class Window:
 		# setup window
 		self.window = tk.Tk()
 		self.window.title("The Game of Glitches")
+		self.window.wm_iconphoto(True, tk.PhotoImage(file="other/icon.png"))
 		self.window.config(bg=self.bg)
 
 		# fonts
@@ -87,12 +88,12 @@ class Window:
 
 	def show(self, question):
 		# running the function
-		if question.f == "quit":
-			exit()
 		try:
 			getattr(g, question.f)()
 		except:
 			pass
+		if question.f == "quit":
+			exit()
 		g.generate(question)
 
 		# clearing old screen

@@ -1,4 +1,4 @@
-Death via Idiosy
+Death via Idiocy
 0
 Death via Idleness
 0
@@ -14,9 +14,13 @@ Death via Unluckiness
 0
 Death via Vengeance
 0
-Death via Failiure
-0
 Death via Ikea
 0
 Death via Madness
+0
+Death via Worthlessness
+0
+Death via Your Ideology
+0
+"Alive" via PG Requirements
 0

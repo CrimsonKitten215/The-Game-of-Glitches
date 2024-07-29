@@ -3,6 +3,6 @@ Stella
 P1 Gender
 f
 P2 Name
-Player 2
+Quinn
 P2 Gender
 n

@@ -4,7 +4,7 @@ import useful_code as uc
 
 class GameInfo:
 	"""
-	Class that stores all of the game's variables and has functions for events in the game that change them.
+	Class that stores all of the game's variables and the functions for events in the game that change them.
 	"""
 	def __init__(self):
 		# sql
@@ -18,7 +18,7 @@ class GameInfo:
 			"p2": "#6e6e6e",
 			"possessed p2": "#558057",
 			"peter": "#007ade",
-			"glitch peter": "#3c7ade",
+			"glitched peter": "#3c7ade",
 			"jamie": "#ffff00",
 			"gary": "#a00a0a",
 			"ryan": "#0000b3",
@@ -30,7 +30,8 @@ class GameInfo:
 			"red": "#ee0000",
 			"blue": "#0000ff",
 			"green": "#00ff00",
-			"grey": "#bbbbbb"
+			"grey": "#bbbbbb",
+			"gold": "#DB901C"
 		}
 
 		# relationship levels
@@ -46,17 +47,26 @@ class GameInfo:
 			"mikayla": 0
 		}
 
-		# names (just some test stuff that'll be replaced later)
-		self.__p1_name = "Stella"
-		self.__p2_name = "Player 2"
-		self.__transgenderfy("f", 1)
-		self.__transgenderfy("n", 2)
-
 		# carry-over variables
-		self.__deal = "none"
-		self.__opped = False
-		self.__times_glitched = 0
-		self.act = 1
+		with open("memory/carry_over_info.txt", "r") as file:
+			info = file.read().split("\n")
+		self.act = int(info[1])
+		if self.act != 1:
+			self.__deal = info[3]
+			self.__opped = info[5]
+			self.__times_glitched = info[7]
+
+			# change later when I figure out what each stage will be called
+			if self.__deal == "possessed":
+				self.__possessed = True
+
+		# player info
+		with open("memory/player_info.txt", "r") as file:
+			info = file.read().split("\n")
+		self.__p1_name = info[1]
+		self.__p2_name = info[5]
+		self.__transgenderfy(info[3], 1)
+		self.__transgenderfy(info[7], 2)
 
 		# single-playthrough variables
 		self.__next_bfly_effect = 0
@@ -162,14 +172,16 @@ class GameInfo:
 			for c in question.choice_codes:
 				question.addResponse(c, Question(c))
 
-	def word_replacer(self, old_word: str, new_word: str, text: str):
-		temp = text.index(old_word)
-		if temp == 0:
-			return new_word + text[len(old_word) + 4:]
-		else:
-			return text[:temp] + new_word + text[temp + len(old_word):]
+	def __word_replacer(self, old_word: str, new_word: str, text: str):
+		while old_word in text:
+			temp = text.index(old_word)
+			if temp == 0:
+				text = new_word + text[len(old_word) + 4:]
+			else:
+				text = text[:temp] + new_word + text[temp + len(old_word):]
+		return text
 
-	def formatter(self, text: str, char: str, new_alpha: list):
+	def __formatter(self, text: str, char: str, new_alpha: list):
 		alphabet = list("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
 		new_text = text
 		while char + "{" in new_text:
@@ -192,7 +204,7 @@ class GameInfo:
 				else:
 					temp += c
 
-			new_text = self.word_replacer(new_text[start: end], temp, new_text).replace("}", "")
+			new_text = self.__word_replacer(new_text[start: end], temp, new_text).replace("}", "")
 		return new_text
 
 	def format(self, text: str, speech_marks=True):
@@ -204,7 +216,7 @@ class GameInfo:
 		Variables: V{}
 		P1 Pronouns: P1{}
 		P2 Pronouns: P2{}
-		): ]
+		(): []
 		"""
 
 		# alphabets
@@ -273,25 +285,49 @@ class GameInfo:
 			new_text = new_text[:temp - 1] + new_text[temp:]
 
 		# text formatting
-		new_text = self.formatter(new_text, "G", glitched_letters)
+		new_text = self.__formatter(new_text, "G", glitched_letters)
 
 		# names
 		if "V{p1_name}" in new_text:
-			new_text = self.word_replacer("V{p1_name}", self.__p1_name, new_text)
-		if "V{p2_name}" in new_text:
-			new_text = self.word_replacer("V{p2_name}", self.__p2_name, new_text)
+			new_text = self.__word_replacer("V{p1_name}", self.__p1_name, new_text)
+		if self.act != 1 and "V{p2_name}" in new_text:
+			new_text = self.__word_replacer("V{p2_name}", self.__p2_name, new_text)
 
 		# pronouns
 		for (p, q) in self.__p1_pronouns.items():
 			new_p = "P1{" + p + "}"
 			if new_p in new_text:
-				new_text = self.word_replacer(new_p, q, new_text)
-		for (p, q) in self.__p2_pronouns.items():
-			new_p = "P2{" + p + "}"
-			if new_p in new_text:
-				new_text = self.word_replacer(new_p, q, new_text)
+				new_text = self.__word_replacer(new_p, q, new_text)
+		if self.act != 1:
+			for (p, q) in self.__p2_pronouns.items():
+				new_p = "P2{" + p + "}"
+				if new_p in new_text:
+					new_text = self.__word_replacer(new_p, q, new_text)
 
 		return new_text
+
+	def __relation_checker(self, character: str):
+		if self.__rel[character] > 0:
+			self.__next_bfly_effect = 0
+		else:
+			self.__next_bfly_effect = 1
+
+	def end_count_updater(self, file: str, ending: str):
+		with open(f"memory/{file}.txt", "r") as open_file:
+			info = open_file.read().split("\n")
+		new_info = ""
+		next = False
+
+		for i in info:
+			if next:
+				new_info += str(int(i) + 1) + "\n"
+				next = False
+			else:
+				new_info += i + "\n"
+			if i == ending:
+				next = True
+		with open(f"memory/{file}.txt", "w") as open_file:
+			open_file.write(new_info[:-1])
 
 	# choice functions
 	def AAF1(self):
@@ -315,10 +351,7 @@ class GameInfo:
 		self.__items.append("money")
 
 	def ABN1(self):
-		if self.__rel["gary"] > 0:
-			self.__next_bfly_effect = 0
-		else:
-			self.__next_bfly_effect = 1
+		self.__relation_checker("gary")
 
 	def ABT1(self):
 		self.__gary_knows_name = True
@@ -330,8 +363,38 @@ class GameInfo:
 	def ABW1(self):
 		self.__rel["gary"] -= 3
 
+	def ADP1(self):
+		self.end_count_updater("deaths_1", "Death via Idiosy")
 
-g = GameInfo()
+	def ADQ1(self):
+		self.end_count_updater("deaths_1", "Death via Idleness")
+
+	def ADR1(self):
+		self.end_count_updater("deaths_1", '"Alive" via Exploiting PG Requirements')
+
+	def ADS1(self):
+		self.end_count_updater("deaths_1", "Death via Volatility")
+
+	def ADT1(self):
+		self.end_count_updater("deaths_1", "Death via Vulgarity")
+
+	def ADU1(self):
+		self.end_count_updater("deaths_1", "Death via Assholery")
+
+	def ADV1(self):
+		self.end_count_updater("deaths_1", "Death via Unluckiness")
+
+	def AEB1(self):
+		if "money" in self.__items:
+			self.__next_bfly_effect = 0
+		else:
+			self.__next_bfly_effect = 1
+
+	def AEG1(self):
+		self.end_count_updater("deaths_1", "Death via Worthlessness")
+
+	def AEN1(self):
+		self.end_count_updater("deaths_1", "Death via Your Ideology")
 
 
 class Question:
@@ -425,4 +488,14 @@ class Question:
 			
 
 # generating choice tree
-qtree = Question("AAA1")
+g = GameInfo()
+if g.act == 1:
+	qtree = Question("AAA1")
+
+# future acts
+"""
+elif g.act == 2:
+	qtree = Question("AAA2")
+else:
+	qtree = Question("AAA3")
+"""
