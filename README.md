@@ -7,18 +7,24 @@ Also, there are some stupid jokes in there. Ignore those - they were probably ma
 Finally, if you see something that looks like what an insane person would write, that's for the character (the narrator is canonically a sadist and the players for act 1 and act 2-3 are canonically sociopaths).
 
 
-CREDITS (There are no credits, so here's some cool games I took inspiration from):
+CREDITS:
+A big thankyou to one of my old coding teachers, who's name will not be mentioned for privacy reasons, for giving me the skeleton code for the UI that this game uses, the original version of the question tree class, etc. You didn't need to do that, but just know that I greatly appreciate it if you ever see this - tkinter is horrible and annoying, and I'd probably give up using it without that help.
 
-Kyle is Famous
+Also, a big thankyou to myself for, you know, coding the rest of it!
 
-The Stanley Parable
 
-Detroit: Become Human
+To end off, here's a list of amazing games I took heavy inspiration from, most of which being incredibly underrated. All I highly recommend you play all of them (except maybe the last 3 for obvious reasons if you've ever heard of any of them XD) if you like the genre of games this one falls under:
 
-Slay the Princess
+Kyle is Famous (Literally the result of if someone got high and drunk, had a psychotic dream afterwards, and then decided to make a game based on it. Absolutely hilarious, though!)
 
-Doki Doki Literature Club
+The Stanley Parable (Literally the result of if someone got high and drunk, and then decided to make a game based on it, but at least made it somewhat coherent plot-wise. Aka, a classic.)
 
-Dayshift at Freddy's 1-3 (A fangame but a really really good one)
+Detroit: Become Human (Unlike the two above, it's more plot-based rather than for comedy. Really good story and gameplay, just go play it.)
 
-Sonic.exe Nightmare Beginning (Another fangame - DO NOT SEARCH THIS ONE UP!)
+Slay the Princess (Indie done right. Also, the art is gourgeous.)
+
+Doki Doki Literature Club (WILL GIVE YOU NIGHTMARES! Great game, though.)
+
+Dayshift at Freddy's 1-3 (A fangame but a really really good one - I spent an embarrassing number of hours playing these 3 games...)
+
+Sonic.exe Nightmare Beginning (Another fangame - DO NOT SEARCH THIS ONE UP! A perfect example of what a good creepypasta game should be like, though. Also, it inspired me to start trying to make games as a kid. Don't ask why I played THIS of all things as a kid. XD)
