@@ -13,7 +13,7 @@ A big thankyou to one of my old coding teachers, who's name will not be mentione
 Also, a big thankyou to myself for, you know, coding the rest of it!
 
 
-To end off, here's a list of amazing games I took heavy inspiration from, most of which being incredibly underrated. All I highly recommend you play all of them (except maybe the last 3 for obvious reasons if you've ever heard of any of them XD) if you like the genre of games this one falls under:
+To end off, here's a list of amazing games I took heavy inspiration from, most of which being incredibly underrated. All I highly recommend you play (except maybe the last 3 for obvious reasons if you've ever heard of any of them XD) if you like the genre of games this one falls under:
 
 Kyle is Famous (Literally the result of if someone got high and drunk, had a psychotic dream afterwards, and then decided to make a game based on it. Absolutely hilarious, though!)
 
