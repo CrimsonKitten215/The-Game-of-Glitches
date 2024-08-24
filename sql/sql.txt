@@ -124,7 +124,7 @@ VALUES
     ('ADU1', 'Ending', 'gold', 'You got: Death via Assholery', 'ADU1', 'AAA0', 'AAA0'),
     ('ADV1', 'Ending', 'gold', 'You got: Death via Unluckiness', 'ADV1', 'AAA0', 'AAA0'),
     ('ADW1', 'Narrator', 'mia', 'You decide to call upon the powers of your non-existent plot armour and deus ex machina to all of a sudden give you the ability to untie the ropes around you and the chair.', 'na', 'ADX1', 'AAB0'),
-    ('ADX1', 'Narrator', 'mia', 'After you finish, you realise that you need a well thought out escape plan. Too bad they all suck! Hahahahaha!', 'na', 'ADY1, AD?1, AD?1, AD?1', 'ABY1, AAF0, AAF0, AAF0'),
+    ('ADX1', 'Narrator', 'mia', 'After you finish, you realise that you need a well thought out escape plan. Too bad they all suck! Hahahahaha!', 'na', 'ADY1, AE?1, AEO1, AE?1', 'ABY1, AAF0, ACA1, AAF0'),
     ('ADY1', 'Narrator', 'mia', 'You decide to attempt to bribe one of them.', 'na', 'ADZ1', 'AAB0'),
     ('ADZ1', 'Narrator', 'mia', 'After sneaking around a bit, you find a member of the group of people who you haven''t seen yet.', 'na', 'AEA1', 'AAB0'),
     ('AEA1', 'G{Unknown Person}', 'mikayla', 'Shouldn''t you be in the interrogation room?', 'na', 'AEB1', 'ACC1'),
@@ -140,7 +140,16 @@ VALUES
     ('AEK1', 'Narrator', 'mia', 'You give her the £5 and she half-heartedly takes it from your hand, clearly not caring about it much. After, she stands up and you both head towards the door.', 'na', 'AEL1', 'AAB0'),
     ('AEL1', 'Narrator', 'mia', 'However, perhaps it wasn''t the greatest idea abusing capitalism in an anarchist''s den, as every single member of Gary''s group immediately sensed your ill-use of money, and surrounded the door.', 'na', 'AEM1', 'ACG1'),
     ('AEM1', 'Narrator', 'mia', 'They quickly bashed down the door, and since you had nowhere to go, they shot you both immediately for the sinful act you both took part in.', 'na', 'AEN1', 'AAB0'),
-    ('AEN1', 'Ending', 'gold', 'You got: Death via Your Ideology', 'AEN1', 'AAA0', 'AAA0');
+    ('AEN1', 'Ending', 'gold', 'You got: Death via Your Ideology', 'AEN1', 'AAA0', 'AAA0'),
+    ('AEO1', 'Narrator', 'mia', 'You look for something to dig out of the bunker with.', 'na', 'AEP1', 'AAB0'),
+    ('AEP1', 'Narrator', 'mia', 'After some searching, you find the only object you could possibly dig with... a teaspoon.', 'na', 'AEQ1', 'ACH1'),
+    ('AEQ1', 'Narrator', 'mia', 'Yeah, yeah, shut up. It''s my game not yours! ...Anyway, you start to dig in a secluded part of the bunker where the lead and concrete surrounding it is conveniently slightly weaker.', 'na', 'AER1', 'AAB0'),
+    ('AER1', 'Narrator', 'mia', 'And you keep digging...', 'na', 'AES1', 'AAB0'),
+    ('AES1', 'Narrator', 'mia', 'And digging...', 'na', 'AET1', 'AAB0'),
+    ('AET1', 'Narrator', 'mia', 'Until you eventually escape to the surface!', 'na', 'AEU1', 'AAB0'),
+    ('AEU1', 'Narrator', 'mia', '...Only to realise that the nuclear bomb already exploded... 30 years ago.', 'na', 'AEV1', 'ACI1'),
+    ('AEV1', 'Narrator', 'mia', 'Before long, you dies from the radiation outside, since you weren''t equipped with a lead suit.', 'na', 'AEW1', 'AAB0'),
+    ('AEW1', 'Ending', 'gold', 'You got: Death via Spooning', 'AEW1', 'AAA0', 'AAA0');
 
 -- Fixer Comment (DON'T DELETE)
 INSERT INTO Buttons
@@ -209,12 +218,14 @@ VALUES
     ('ACD1', '"Uhhh..."', 'white'),
     ('ACE1', '"Is this enough?"', 'white'),
     ('ACF1', '"Cool."', 'white'),
-    ('ACG1', '"Oh, shit."', 'white');
+    ('ACG1', '"Oh, shit."', 'white'),
+    ('ACH1', '"Seriously?!"', 'white'),
+    ('ACI1', '"Oh..."', 'white');
 
 
 -- Extra Notes:
 -- Line 78: AAF0 should be AAX1 in final version
 -- Line 110: AAF0 should be ABS1 in final version
--- Line 127: 3x AAF0 should be ABZ1, ACA1, ACB1 in final version
+-- Line 127: 2x AAF0 should be ABZ1, ACB1 in final version
 
 -- To output the table in a nice way --> SELECT Choices.code, Choices.name, Choices.speech, Choices.choice_codes, Buttons.code, Buttons.display_text FROM Choices, Buttons WHERE Choices.button_codes LIKE CONCAT('%', Buttons.code, '%')

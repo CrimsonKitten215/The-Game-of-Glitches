@@ -1,6 +1,6 @@
 import random
 import sqlite3
-import useful_code as uc
+import other.useful_code as uc
 
 class GameInfo:
 	"""
@@ -395,6 +395,9 @@ class GameInfo:
 
 	def AEN1(self):
 		self.end_count_updater("deaths_1", "Death via Your Ideology")
+
+	def AEW1(self):
+		self.end_count_updater("deaths_1", "Death via Spooning")
 
 
 class Question:
