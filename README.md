@@ -8,7 +8,7 @@ Finally, if you see something that looks like what an insane person would write,
 
 
 CREDITS:
-A big thankyou to one of my old coding teachers, who's name will not be mentioned for privacy reasons, for giving me the skeleton code for the UI that this game uses, the original version of the question tree class, etc. You didn't need to do that, but just know that I greatly appreciate it if you ever see this - tkinter is horrible and annoying, and I'd probably give up using it without that help.
+A big thankyou to one of my old coding teachers, who's name will not be mentioned for privacy reasons, for giving me the original code for the UI that this game uses, the original version of the question tree class, etc. You didn't need to do that, but just know that I greatly appreciate it if you ever see this - tkinter is horrible and annoying, and I'd probably give up using it without that help.
 
 Also, a big thankyou to myself for, you know, coding the rest of it!
 
