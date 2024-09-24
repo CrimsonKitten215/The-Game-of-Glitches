@@ -1,0 +1,8 @@
+P1 Name
+Stella
+P1 Gender
+f
+P2 Name
+Quinn
+P2 Gender
+n
