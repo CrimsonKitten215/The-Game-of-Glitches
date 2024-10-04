@@ -26,3 +26,7 @@ Death via Spooning
 0
 "Alive" via PG Requirements
 0
+Death via Taunting
+0
+Death via Lead Poisoning
+0

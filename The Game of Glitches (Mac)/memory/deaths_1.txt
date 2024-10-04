@@ -9,7 +9,7 @@ Death via Vulgarity
 Death via Vacuousness
 0
 Death via Assholery
-1
+0
 Death via Unluckiness
 0
 Death via Vengeance
@@ -25,4 +25,8 @@ Death via Your Ideology
 Death via Spooning
 0
 "Alive" via PG Requirements
+0
+Death via Taunting
+0
+Death via Lead Poisoning
 0
