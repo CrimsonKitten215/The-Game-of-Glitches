@@ -4,13 +4,15 @@ There is bad language in this so if you use school wifi, hahaha die!
 
 Also, there are some stupid jokes in there. Ignore those - they were probably made by one of my friends who shall not be named.
 
-Finally, if you see something that looks like what an insane person would write, that's for the character (the narrator is canonically a sadist and the players for act 1 and act 2-3 are canonically sociopaths).
+Finally, if you see something that looks like what an insane person would write, that's for the character (the narrator is canonically a sadist and the player(s) are canonically sociopaths). Don't worry, I myself am NOT a sociopath... probably.
 
 
 CREDITS:
 A big thankyou to one of my old coding teachers, who's name will not be mentioned for privacy reasons, for giving me the original code for the UI that this game uses, the original version of the question tree class, etc. You didn't need to do that, but just know that I greatly appreciate it if you ever see this - tkinter is horrible and annoying, and I'd probably give up using it without that help.
 
 Also, a big thankyou to myself for, you know, coding the rest of it!
+
+I want to give credit to my friends too for giving me ideas for the storyline, despite most of them being terrible. But that's what makes it funny, so an A for effort to them anyway - not like I could come up with much better!
 
 
 To end off, here's a list of amazing games I took heavy inspiration from, most of which being incredibly underrated. All I highly recommend you play (except maybe the last 3 for obvious reasons if you've ever heard of any of them XD) if you like the genre of games this one falls under:
