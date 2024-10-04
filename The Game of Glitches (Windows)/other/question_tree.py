@@ -177,7 +177,7 @@ class GameInfo:
 		while old_word in text:
 			temp = text.index(old_word)
 			if temp == 0:
-				text = new_word + text[len(old_word) + 4:]
+				text = new_word + text[len(old_word):]
 			else:
 				text = text[:temp] + new_word + text[temp + len(old_word):]
 		return text
@@ -279,6 +279,7 @@ class GameInfo:
 		new_text = text.replace("\\", "'").replace("''", "'")
 		if not speech_marks:
 			new_text = new_text.strip('"')
+		new_text = new_text.replace("[", "(")
 		new_text = new_text.replace("]", ")")
 		if "£" in new_text:
 			temp = new_text.index("£")
@@ -329,6 +330,24 @@ class GameInfo:
 				next = True
 		with open(f"memory/{file}.txt", "w") as open_file:
 			open_file.write(new_info[:-1])
+
+	@staticmethod
+	def __recolour(col: str, amount: int, num: int):
+		hex = "0123456789abcdef"
+		col = "#" + (2 * hex[hex.find(col[1]) - num]) + (4 * hex[hex.find(col[3]) + num])
+		return col, amount - num
+
+	def __update_mia_colour(self, amount: int):
+		self.__rel["mia"] -= amount
+		col = self.col["mia"]
+
+		while amount != 0 and not ((amount < 0 and col == "#ff0000") or (amount > 0 and col == "#00ffff")):
+			if amount > 0:
+				col, amount = self.__recolour(amount, 1)
+			else:
+				col, amount = self.__recolour(amount, -1)
+
+		self.col["mia"] = col
 
 	# choice functions
 	def AAF1(self):
@@ -400,11 +419,31 @@ class GameInfo:
 	def AEW1(self):
 		self.__end_count_updater("deaths_1", "Death via Spooning")
 
+	def AFC1(self):
+		self.__end_count_updater("deaths_1", "Death via Taunting")
+
+	def AFM1(self):
+		self.__update_mia_colour(2)
+
+	def AFN1(self):
+		self.__update_mia_colour(4)
+
+	def AFR1(self):
+		self.__end_count_updater("deaths_1", "Death via Lead Poisoning")
+
 
 class Question:
 	def __init__(self, code="AAA0"):
-		# setting variables
-		code = code.replace(",", "")
+		code2 = code.replace(",", "")
+
+		# duplicate checker
+		if code2[-1] == "9":
+			c = code2[:3]
+			temp = g.fetch_db(f"SELECT choice_codes FROM Choices WHERE choice_codes LIKE '%{c}%'")
+			code = c + temp[temp.index(c) + 3]
+		else:
+			code = code2
+
 		self.speaker = g.fetch_db(f"SELECT name FROM Choices WHERE code = '{code}'").strip(",")
 		if self.speaker == ":":
 			self.speaker = ""
@@ -422,25 +461,18 @@ class Question:
 			self.button_text = "NONE"
 			self.button_colour = "#ffffff"
 		else:
-			bt1 = g.fetch_db(f"SELECT choice_codes FROM Choices WHERE choice_codes LIKE '%{code}%'").split(", ")
-			bt2 = g.fetch_db(f"SELECT button_codes FROM Choices WHERE choice_codes LIKE '%{code}%'").split(", ")
-
-			# stupid annoying required fix for some reason
-			if code == "AAU1":
-				bt2[0] = "AAC1"
-			elif code == "ABT1":
-				bt2[0] = "AAR1"
-
-			try:
-				bt3 = bt2[bt1.index(code)]
-			except:
-				bt3 = bt2[0]
+			bt1 = g.fetch_db(f"SELECT choice_codes FROM Choices WHERE choice_codes LIKE '%{code2}%'").split(", ")
+			bt2 = g.fetch_db(f"SELECT button_codes FROM Choices WHERE choice_codes LIKE '%{code2}%'").split(", ")
+			bt3 = bt2[bt1.index(code2)]
 
 			self.button_text = g.format(g.fetch_db(f"SELECT display_text FROM Buttons WHERE code = '{bt3}'", True))[:-1]
+			if self.button_text[0] == '"' and self.button_text[-1] != '"':
+				self.button_text = self.button_text[1:]
 			try:
 				self.button_colour = g.col[g.fetch_db(f"SELECT colour FROM Buttons WHERE code = '{bt3}'", True)[:-1]]
 			except:
 				self.button_colour = g.col["white"]
+
 		temp = g.fetch_db(f"SELECT choice_codes FROM Choices WHERE code = '{code}'").split(", ")
 		temp2 = g.fetch_db(f"SELECT button_codes FROM Choices WHERE code = '{code}'").split(", ")
 		self.choice_codes = temp

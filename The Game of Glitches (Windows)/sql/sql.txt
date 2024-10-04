@@ -17,8 +17,9 @@ CREATE TABLE Buttons (
 
 
 -- Table Editor
--- Choices Edits --> ('AEC1', 'Narrator', 'mia', '', 'na', 'AED1', 'AAB0'),
--- Endings Choice Template --> ('ADD1', 'Ending', 'gold', 'You got: Death via ', 'ADD1', 'AAA0', 'AAA0'),
+-- Make any choice codes use a 9 if it's a duplicate
+-- Choices Edits --> ('AFA1', 'Narrator', 'mia', '', 'na', 'AFB1', 'AAB0'),
+-- Endings Choice Template --> ('AFA1', 'Ending', 'gold', 'You got: Death via ', 'AFA1', 'AAA0', 'AAA0'),
 -- Buttons Edits --> ('ACC1', '', 'white'),
 INSERT INTO Choices
 VALUES
@@ -60,14 +61,14 @@ VALUES
     ('ABI1', 'Narrator', 'mia', 'You try to run as fast as you can, but the bluenette catches up and shoots Peter, before knocking you out swiftly. You didn''t even have a chance.', 'na', 'ABJ1', 'AAB0'),
     ('ABJ1', 'Narrator', 'mia', 'A few hours later, you wake up and quickly notice that you are bound to a metal chair with leather straps, but before you can even think to panic, the maroon-clad man from earlier steps out of the darkness and speaks.', 'na', 'ABK1', 'AAB0'),
     ('ABK1', 'Man', 'gary', 'Wait a minute... That''s not the guy I wanted!', 'na', 'ABL1', 'AAU1'),
-    ('ABL1', 'Man (to Ryan)', 'gary', 'Ryan, does this look like a golden blonde yellow-clothed 23 year old to you?! I mean, P1{they''re} dressed in green for Christ''s sake!', 'na', 'ABM1', 'AAB0'),
+    ('ABL1', 'Man (to Ryan)', 'gary', 'Ryan, does this look like a golden blonde, yellow-clothed 23-year-old to you?! I mean, P1{they''re} dressed in green for Christ''s sake!', 'na', 'ABM1', 'AAB0'),
     ('ABM1', 'Narrator', 'mia', 'The navy-clad man that attacked you earlier, now known as Ryan, then also steps out of the shadowed corner of the room.', 'na', 'ABN1', 'AAB0'),
     ('ABN1', 'Ryan (to the other man)', 'ryan', 'Ugh, it was surprisingly dark, considering it was only 6pm, so I could barely see what P1{they} looked like. Plus, P1{they} were walking through a dark alleyway in the evening. Like, what did P1{they} expect to happen?', 'ABN1', 'ABO1, ABQ1', 'AAB0'),
     ('ABO1', 'Man', 'gary', 'Hey, you''re the P1{person} from earlier, right? The one I gave the fiver to?', 'na', 'ABP1', 'AAC0'),
     ('ABP1', 'Gary', 'gary', 'Listen, my name is Gary. I''m real sorry about this, okay? We were looking for someone else, and Ryan got it wrong.', 'na', 'ABS1', 'AAL1'),
     ('ABQ1', 'Man', 'gary', 'Hey, you''re the dick from earlier, right?', 'na', 'ABR1, ADC1', 'AAC0, AAM1'),
     ('ABR1', 'Gary', 'gary', 'Okay, I''m bored now - Alexa and Siri are better at this. So, uh, would you kindly remove yourself from existence by the most painless way possible?', 'na', 'ADO1', 'ABX1'),
-    ('ABS1', 'Gary', 'gary', 'Well, whatever your name is... Tell us what you''re called first and then we''ll decide what to do with you.', 'na', 'ABT1, ABT1, ABU1, ABV1', 'AAO1, AAP1, AAQ1, AAD0'),
+    ('ABS1', 'Gary', 'gary', 'Look, tell us what you''re called first and then we''ll decide what to do with you.', 'na', 'ABT1, ABT9, ABU1, ABV1', 'AAO1, AAP1, AAQ1, AAD0'),
     ('ABT1', 'Gary', 'gary', 'Coolio.', 'ABT1', 'ABX1', 'AAB0'),
     ('ABU1', 'Gary', 'gary', 'Rude, but okay. To be fair, we did kidnap you...', 'ABU1', 'ABX1', 'AAB0'),
     ('ABV1', 'Gary', 'gary', 'I''m sorry?', 'na', 'ABT1, ABW1', 'AAR1, AAS1'),
@@ -107,7 +108,7 @@ VALUES
     ('ADD1', 'Narrator', 'mia', 'You decide to make a run for it before Gary can even process what happened. Unfortunately for you, you don''t even know the layout of the bunker you''re in at all, but luckily you find a random storage closet and hide in there.', 'AAX1', 'ADE1', 'AAB0'),
     ('ADE1', 'Narrator', 'mia', 'While looking for supplies, you find a map of the underground building you''re stuck in, and have a look at everywhere shown on it. While you could escape, judging by your past choices, I think I''m qualified to choose for you.', 'na', 'ADF1', 'AAB0'),
     ('ADF1', 'Narrator', 'mia', 'You "decide" to sneak towards where their nuke [aka the G-bomb] is kept, though Gary is still looking for you.', 'na', 'ADG1', 'AAB0'),
-    ('ADG1', 'Gary', 'gary', '{name}, where are you?! If ya don''t come out and surrender this instant, I''ll shoot you!', 'na', 'ADH1, AD?1', 'ABR1, AAF0'),
+    ('ADG1', 'Gary', 'gary', 'V{p1_name}, where are you?! If ya don''t come out and surrender this instant, I''ll shoot you!', 'na', 'ADH1, AEX1', 'ABR1, ABS1'),
     ('ADH1', 'Gary', 'gary', 'Wait, you actually listened again?', 'na', 'ADI1', 'ABT1'),
     ('ADI1', 'Gary', 'gary', 'Hmmm...', 'na', 'ADJ1', 'AAB0'),
     ('ADJ1', 'Gary', 'gary', 'I think I know why you''re being as obedient as a lil'' puppy dog...', 'na', 'ADK1', 'ABU1'),
@@ -149,7 +150,30 @@ VALUES
     ('AET1', 'Narrator', 'mia', 'Until you eventually escape to the surface!', 'na', 'AEU1', 'AAB0'),
     ('AEU1', 'Narrator', 'mia', '...Only to realise that the nuclear bomb already exploded... 30 years ago.', 'na', 'AEV1', 'ACI1'),
     ('AEV1', 'Narrator', 'mia', 'Before long, you dies from the radiation outside, since you weren''t equipped with a lead suit.', 'na', 'AEW1', 'AAB0'),
-    ('AEW1', 'Ending', 'gold', 'You got: Death via Spooning', 'AEW1', 'AAA0', 'AAA0');
+    ('AEW1', 'Ending', 'gold', 'You got: Death via Spooning', 'AEW1', 'AAA0', 'AAA0'),
+    ('AEX1', 'Narrator', 'mia', 'Hmmm... You''re in a tricky situation. If you don''t do anything, they''ll find you soon. Welp, here''s the list of plans. Good luck, V{p1_name}! ...G{if that is your name}...', 'na', 'AEY1, AEZ1, AFD1, A??1', 'ACJ1, ACK1, ACL1, ACM1'),
+    ('AEY1', 'Narrator', 'mia', 'You manage to find a nearby vent in the ceiling, so quickly pull an Ikea chair (why do they have this?) under it and jump up into it.', 'na', 'AF?1', 'AAB0'),
+    ('AEZ1', 'Narrator', 'mia', 'They quickly locate you. Maybe shouting that for everyone to hear wasn''t such a good idea...', 'na', 'AFA1', 'AAB0'),
+    ('AFA1', 'Gary & Friends', 'gary', 'Ah, found you!', 'na', 'AFB1', 'ACN1'),
+    ('AFB1', 'Narrator', 'mia', 'They shoot you without hesitation. Oopsies!', 'na', 'AFC1', 'AAB0'),
+    ('AFC1', 'Ending', 'gold', 'You got: Death via Taunting', 'AFC1', 'AAA0', 'AAA0'),
+    ('AFD1', 'Narrator', 'mia', 'You decide to try digging through the metal walls to the bomb room... using plastic spoons.', 'na', 'AFE1', 'ACO1'),
+    ('AFE1', 'Narrator', 'mia', 'Boy, there''s a lotta digging options in this game...', 'na', 'AFF1', 'ACO1'),
+    ('AFF1', 'Narrator', 'mia', 'At least I think they are; I actually don''t remember.', 'na', 'AFG1', 'ACO1'),
+    ('AFG1', 'Narrator', 'mia', 'Anyway, you eventually somehow get through the layer of steel and reach the layer of pure lead, since this, of course, is a bomb shelter.', 'na', 'AFH1', 'ACO1'),
+    ('AFH1', 'Narrator', 'mia', 'Let''s hope that the pure lead you''re touching doesn''t make you go insane!', 'na', 'AFI1', 'ACO1'),
+    ('AFI1', 'Narrator', 'mia', 'Remember, it IS poison...', 'na', 'AFJ1', 'ACO1'),
+    ('AFJ1', 'Narrator', 'mia', 'Aaaaand you''re just gonna ignore me...', 'na', 'AFK1', 'ACO1'),
+    ('AFK1', 'Narrator', 'mia', 'Can ya stop skipping my dialogue, please? Or if you''re actually reading this garbage, can you please get it through your thick skull!', 'na', 'AFL1', 'ACP1'),
+    ('AFL1', 'Narrator', 'mia', 'Oh no, I think the lead got to ya.', 'na', 'AFM1', 'ACQ1'),
+    ('AFM1', 'Narrator', 'mia', 'You sound drunk... and like you''ve just used 450 plastic spoons on a steel and lead wall.', 'na', 'AFN1', 'ACR1'),
+    ('AFN1', 'Narrator', 'mia', 'Um...', 'AFM1', 'AFN1', 'ACS1'),
+    ('AFO1', 'Silly Voice (to herself)', 'mia', 'Don''t get mad... Don''t get mad...', 'AFN1', 'AFS1', 'ACT1'),
+    ('AFP1', 'Scary Voice', 'mia', 'Because that''s not something you should know yet! You know, I thought it''d be funny watching you suffer from lead poisoning, G{but it''s just making me annoyed}! This isn''t a daycare!', 'AFN1', 'AFQ1', 'ACU1'),
+    ('AFQ1', 'G{Demonic Voice}', 'mia', 'You were swifly killed by m- by lead poisoning.', 'na', 'AFR1', 'AAB0'),
+    ('AFR1', 'Ending', 'gold', 'You got: Death via Lead Poisoning', 'AFR1', 'AAA0', 'AAA0'),
+    ('AFS1', 'Exasperated Voice', 'mia', 'You''re hallucinating, V{p1_name}. It''s all in your head.', 'AFM1', 'AFT1', 'ACV1'),
+    ('AFT1', 'Slightly Deranged Voice', 'mia', 'No it doesn''t! I''m more real than even you because- I''m not even gonna tell you why.', 'AFN1', 'AFP1', 'AAG0');
 
 -- Fixer Comment (DON'T DELETE)
 INSERT INTO Buttons
@@ -160,6 +184,7 @@ VALUES
     ('AAD0', '"No."', 'white'),
     ('AAE0', 'CENSORED', 'red'),
     ('AAF0', 'ERROR: ROUTE INCOMPLETE! PICK SOMETHING ELSE OR DIE!', 'green'),
+    ('AAG0', '"Why?"', 'white'),
     ('AAA1', '"Oi, watch it!"', 'white'),
     ('AAB1', '"Hey, I''ll sue you for that!"', 'white'),
     ('AAC1', '"Sounds good."', 'white'),
@@ -220,12 +245,17 @@ VALUES
     ('ACF1', '"Cool."', 'white'),
     ('ACG1', '"Oh, shit."', 'white'),
     ('ACH1', '"Seriously?!"', 'white'),
-    ('ACI1', '"Oh..."', 'white');
-
-
--- Extra Notes:
--- Line 78: AAF0 should be AAX1 in final version
--- Line 110: AAF0 should be ABS1 in final version
--- Line 127: 2x AAF0 should be ABZ1, ACB1 in final version
-
--- To output the table in a nice way --> SELECT Choices.code, Choices.name, Choices.speech, Choices.choice_codes, Buttons.code, Buttons.display_text FROM Choices, Buttons WHERE Choices.button_codes LIKE CONCAT('%', Buttons.code, '%')
+    ('ACI1', '"Oh..."', 'white'),
+    ('ACJ1', 'Do a "Die Hard".', 'white'),
+    ('ACK1', '"You''ll never find me!"', 'white'),
+    ('ACL1', 'Dig to the bomb room.', 'white'),
+    ('ACM1', 'Drink bleach and the suspicious white washing powder.', 'white'),
+    ('ACN1', '"Aw, shucks..."', 'white'),
+    ('ACO1', 'Continue digging', 'grey'),
+    ('ACP1', '"Hehe... shut uppp."', 'white'),
+    ('ACQ1', '"Nah, I''m fiiiiine..."', 'white'),
+    ('ACR1', '"Shushshhy you silly voice in my heaad..."', 'white'),
+    ('ACS1', '"Good, ya shut your mouth! Or... whatever silly voices in my head have."', 'white'),
+    ('ACT1', '"Haha, why are there so many people watching me?"', 'white'),
+    ('ACU1', '"W-wait, I''m sowwy, scary voice! Don''t hurt me-', 'white'),
+    ('ACV1', '"What about you? That means you''re fake."', 'white');
