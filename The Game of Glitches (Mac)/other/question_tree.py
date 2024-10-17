@@ -1,6 +1,6 @@
 import random
 import sqlite3
-import other.useful_code as uc
+import other.type_convertor as tc
 
 class GameInfo:
 	"""
@@ -35,7 +35,7 @@ class GameInfo:
 		}
 
 		# relationship levels
-		self.__rel = {
+		self._rel = {
 			"mia": 0,
 			"p1": 0,
 			"peter": 0,
@@ -50,8 +50,8 @@ class GameInfo:
 		# carry-over variables
 		with open("memory/carry_over_info.txt", "r") as file:
 			info = file.read().split("\n")
-		self.act = int(info[1])
-		if self.act != 1:
+		self.__act = int(info[1])
+		if self.__act != 1:
 			self.__deal = info[3]
 			self.__opped = info[5]
 			self.__times_glitched = info[7]
@@ -69,14 +69,87 @@ class GameInfo:
 		self.__transgenderfy(info[7], 2)
 
 		# single-playthrough variables
-		self.__next_bfly_effect = 0
-		self.__items = []
-		self.__recent_end = "none"
-		self.__gary_knows_name = False
+		self._next_bfly_effect = 0
+		self._items = []
+		self._recent_end = "none"
+		self._gary_knows_name = False
+
+	# getters/setters
+	def get_p1_name(self):
+		return self.__p1_name
+
+	def get_p2_name(self):
+		return self.__p2_name
+
+	def get_items(self):
+		return self._items
+
+	def get_act(self):
+		return self.__act
+
+	def _set_items(self, new: list):
+		self._items = new
+
+	def _set_next_bfly_effect(self, new: int):
+		self._next_bfly_effect = new
+
+	def _set_gary_knows_name(self, new: bool):
+		self._gary_knows_name = new
+
+	def _set_col(self, new: dict):
+		self.col = new
+
+	def _set_rel(self, new: dict):
+		self._rel = new
 
 	# basic functions
-	def na(self):
-		pass
+	def __get_value(self, q, text: str):
+		try:
+			return getattr(self, text)
+		except:
+			return getattr(q, text)
+
+	def get_info(self, q):
+		text = ""
+		with open(f"save_slots/slot_default.txt", "r") as file:
+			info = file.read().split("\n")
+
+		for i in range(0, len(info), 2):
+			text += "\n" + info[i] + "\n"
+			line = self.__get_value(q, info[i])
+			if isinstance(line, list):
+				text += tc.unlistify(line)
+			elif isinstance(line, dict):
+				text += tc.undictify(line)
+			else:
+				text += str(line).replace("\n", "/n")
+
+		return text[1:]
+
+	def set_info(self, q, info: list):
+		for i in range(0, len(info), 2):
+			# setting temp variables
+			var = self.__get_value(q, info[i])
+			try:
+				f = getattr(self, "_set_" + info[i].strip("_"))
+			except:
+				f = getattr(q, "set_" + info[i].strip("_"))
+
+			# checking if correct type
+			if isinstance(var, list):
+				f(tc.listify(info[i + 1]))
+			elif isinstance(var, dict):
+				f(tc.dictify(info[i + 1]))
+			elif isinstance(var, bool):
+				f(info[i + 1] == "True")
+			elif isinstance(var, int):
+				f(int(info[i + 1]))
+			elif isinstance(var, float):
+				f(float(info[i + 1]))
+			else:
+				f(info[i + 1].replace("/n", "\n"))
+		q.questions = {}
+		return q
 
 	def __transgenderfy(self, gender: str, player: int):
 		# changes the player's pronouns
@@ -168,7 +241,7 @@ class GameInfo:
 		# generating branches
 		if len(question.questions) == 0:
 			if len(question.button_codes) < len(question.choice_codes):
-				question.choice_codes = [question.choice_codes[self.__next_bfly_effect]]
+				question.choice_codes = [question.choice_codes[self._next_bfly_effect]]
 			for c in question.choice_codes:
 				question.add_response(c, Question(c))
 
@@ -217,6 +290,8 @@ class GameInfo:
 		P1 Pronouns: P1{}
 		P2 Pronouns: P2{}
 		(): []
+		'': '
+		,,: ;
 		"""
 
 		# alphabets
@@ -276,17 +351,19 @@ class GameInfo:
 		]
 
 		# random character fixers
-		new_text = text.replace("\\", "'").replace("''", "'")
+		new_text = text.replace("''", "'").replace(",,", ";")
 		if not speech_marks:
 			new_text = new_text.strip('"')
 		new_text = new_text.replace("[", "(")
 		new_text = new_text.replace("]", ")")
 
 		# variables (change later)
-		if "V{p1_name}" in new_text:
-			new_text = self.__word_replacer("V{p1_name}", self.__p1_name, new_text)
-		if self.act != 1 and "V{p2_name}" in new_text:
-			new_text = self.__word_replacer("V{p2_name}", self.__p2_name, new_text)
+		while "V{" in new_text:
+			start_i = new_text.find("V{")
+			for i in range(start_i, len(new_text)):
+				if new_text[i] == "}":
+					new_text = self.__word_replacer(new_text[start_i : i + 1], getattr(g, "get_" + new_text[start_i + 2 : i])(), new_text)
+					break
 
 		# text formatting
 		new_text = self.__formatter(new_text, "G", glitched_letters)
@@ -296,7 +373,7 @@ class GameInfo:
 			new_p = "P1{" + p + "}"
 			if new_p in new_text:
 				new_text = self.__word_replacer(new_p, q, new_text)
-		if self.act != 1:
+		if self.__act != 1:
 			for (p, q) in self.__p2_pronouns.items():
 				new_p = "P2{" + p + "}"
 				if new_p in new_text:
@@ -305,13 +382,13 @@ class GameInfo:
 		return new_text
 
 	def __relation_checker(self, character: str):
-		if self.__rel[character] > 0:
-			self.__next_bfly_effect = 0
+		if self._rel[character] > 0:
+			self._next_bfly_effect = 0
 		else:
-			self.__next_bfly_effect = 1
+			self._next_bfly_effect = 1
 
 	@staticmethod
-	def __end_count_updater(file: str, ending: str):
+	def __end_count_updater(file: str, ending: str, amount=1):
 		with open(f"memory/{file}.txt", "r") as open_file:
 			info = open_file.read().split("\n")
 		new_info = ""
@@ -319,7 +396,7 @@ class GameInfo:
 
 		for i in info:
 			if next:
-				new_info += str(int(i) + 1) + "\n"
+				new_info += str(int(i) + amount) + "\n"
 				next = False
 			else:
 				new_info += i + "\n"
@@ -335,7 +412,7 @@ class GameInfo:
 		return col, amount - num
 
 	def __update_mia_colour(self, amount: int):
-		self.__rel["mia"] -= amount
+		self._rel["mia"] -= amount
 		col = self.col["mia"]
 
 		while amount != 0 and not ((amount < 0 and col == "#ff0000") or (amount > 0 and col == "#00ffff")):
@@ -347,41 +424,44 @@ class GameInfo:
 		self.col["mia"] = col
 
 	# choice functions
+	def na(self):
+		pass
+
 	def AAF1(self):
-		self.__rel["peter"] -= 2
+		self._rel["peter"] -= 2
 
 	def AAK1(self):
-		self.__rel["peter"] += 1
+		self._rel["peter"] += 1
 
 	def AAL1(self):
-		self.__rel["peter"] += 2
+		self._rel["peter"] += 2
 
 	def AAX1(self):
-		self.__rel["gary"] -= 2
+		self._rel["gary"] -= 2
 
 	def ABA1(self):
-		self.__rel["gary"] -= 5
-		self.__items.append("money")
+		self._rel["gary"] -= 5
+		self._items.append("money")
 
 	def ABC1(self):
-		self.__rel["gary"] += 2
-		self.__items.append("money")
+		self._rel["gary"] += 2
+		self._items.append("money")
 
 	def ABN1(self):
 		self.__relation_checker("gary")
 
 	def ABT1(self):
-		self.__gary_knows_name = True
+		self._gary_knows_name = True
 
 	def ABU1(self):
 		self.ABT1()
-		self.__rel["gary"] -= 1
+		self._rel["gary"] -= 1
 
 	def ABW1(self):
-		self.__rel["gary"] -= 3
+		self._rel["gary"] -= 3
 
 	def ADP1(self):
-		self.__end_count_updater("deaths_1", "Death via Idiosy")
+		self.__end_count_updater("deaths_1", "Death via Idiocy")
 
 	def ADQ1(self):
 		self.__end_count_updater("deaths_1", "Death via Idleness")
@@ -402,10 +482,10 @@ class GameInfo:
 		self.__end_count_updater("deaths_1", "Death via Unluckiness")
 
 	def AEB1(self):
-		if "money" in self.__items:
-			self.__next_bfly_effect = 0
+		if "money" in self._items:
+			self._next_bfly_effect = 0
 		else:
-			self.__next_bfly_effect = 1
+			self._next_bfly_effect = 1
 
 	def AEG1(self):
 		self.__end_count_updater("deaths_1", "Death via Worthlessness")
@@ -428,6 +508,18 @@ class GameInfo:
 	def AFR1(self):
 		self.__end_count_updater("deaths_1", "Death via Lead Poisoning")
 
+	def AGB1(self):
+		self.__end_count_updater("deaths_1", "Death via The Matrix (green)")
+
+	def AGD1(self):
+		self.__end_count_updater("deaths_1", "Death via The Matrix (yellow)")
+
+	def AGF1(self):
+		self.__end_count_updater("deaths_1", "Death via Drug Overdose", 10)
+
+	def AGS1(self):
+		self.__end_count_updater("deaths_1", "Death via Not Keeping Away from Children", 10)
+
 
 class Question:
 	def __init__(self, code="AAA0"):
@@ -437,30 +529,33 @@ class Question:
 		if code2[-1] == "9":
 			c = code2[:3]
 			temp = g.fetch_db(f"SELECT choice_codes FROM Choices WHERE choice_codes LIKE '%{c}%'")
-			code = c + temp[temp.index(c) + 3]
+			self.code = c + temp[temp.index(c) + 3]
 		else:
-			code = code2
+			self.code = code2
 
-		self.speaker = g.fetch_db(f"SELECT name FROM Choices WHERE code = '{code}'").strip(",")
+		self.speaker = g.fetch_db(f"SELECT name FROM Choices WHERE code = '{self.code}'").strip(",")
 		if self.speaker == ":":
 			self.speaker = ""
 		else:
 			self.speaker = g.format(self.speaker) + ":"
 		try:
-			self.s_col = g.col[g.fetch_db(f"SELECT colour FROM Choices WHERE code = '{code}'").replace(",", "")]
+			self.s_col = g.col[g.fetch_db(f"SELECT colour FROM Choices WHERE code = '{self.code}'").replace(",", "")]
 		except:
 			self.s_col = g.col["white"]
-		self.f = g.fetch_db(f"SELECT function FROM Choices WHERE code = '{code}'").replace(",", "")
+		self.f = g.fetch_db(f"SELECT function FROM Choices WHERE code = '{self.code}'").replace(",", "")
 		self.questions = {}
 
 		# fetching button name
-		if code == "AAA1":
+		if self.code == "AAA1":
 			self.button_text = "NONE"
 			self.button_colour = "#ffffff"
 		else:
 			bt1 = g.fetch_db(f"SELECT choice_codes FROM Choices WHERE choice_codes LIKE '%{code2}%'").split(", ")
 			bt2 = g.fetch_db(f"SELECT button_codes FROM Choices WHERE choice_codes LIKE '%{code2}%'").split(", ")
-			bt3 = bt2[bt1.index(code2)]
+			try:
+				bt3 = bt2[bt1.index(code2)]
+			except:
+				bt3 = bt2[0]
 
 			self.button_text = g.format(g.fetch_db(f"SELECT display_text FROM Buttons WHERE code = '{bt3}'", True))[:-1]
 			if self.button_text[0] == '"' and self.button_text[-1] != '"':
@@ -470,14 +565,14 @@ class Question:
 			except:
 				self.button_colour = g.col["white"]
 
-		temp = g.fetch_db(f"SELECT choice_codes FROM Choices WHERE code = '{code}'").split(", ")
-		temp2 = g.fetch_db(f"SELECT button_codes FROM Choices WHERE code = '{code}'").split(", ")
+		temp = g.fetch_db(f"SELECT choice_codes FROM Choices WHERE code = '{self.code}'").split(", ")
+		temp2 = g.fetch_db(f"SELECT button_codes FROM Choices WHERE code = '{self.code}'").split(", ")
 		self.choice_codes = temp
 		self.button_codes = temp2
 
 		# aligning text
 		self.question = ""
-		temp_q = g.format(g.fetch_db(f"SELECT speech FROM Choices WHERE code = '{code}'", True)[:-1], False)
+		temp_q = g.format(g.fetch_db(f"SELECT speech FROM Choices WHERE code = '{self.code}'", True)[:-1], False)
 		if len(temp_q) > 50:
 			pointer = 0
 			t = 0
@@ -515,11 +610,44 @@ class Question:
 	def add_responses(self, qs):
 		for q in qs:
 			self.questions[q[0]] = q[1]
-			
+
+	# getters/setters
+	def get_game_info(self):
+		return g.get_info(self)
+
+	def set_game_info(self, info: list):
+		return g.set_info(self, info)
+
+	def set_code(self, new: str):
+		self.code = new
+
+	def set_f(self, new: str):
+		self.f = new
+
+	def set_button_text(self, new: str):
+		self.button_text = new
+
+	def set_button_colour(self, new: str):
+		self.button_colour = new
+
+	def set_speaker(self, new: str):
+		self.speaker = new
+
+	def set_s_col(self, new: str):
+		self.s_col = new
+
+	def set_choice_codes(self, new: list):
+		self.choice_codes = new
+
+	def set_button_codes(self, new: list):
+		self.button_codes = new
+
+	def set_question(self, new: str):
+		self.question = new
 
 # generating choice tree
 g = GameInfo()
-if g.act == 1:
+if g.get_act() == 1:
 	qtree = Question("AAA1")
 
 # future acts

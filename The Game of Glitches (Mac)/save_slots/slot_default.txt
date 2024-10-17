@@ -1,0 +1,27 @@
+col
+"mia": "#ff0000", "p1": "#21a617", "p2": "#6e6e6e", "possessed p2": "#558057", "peter": "#007ade", "glitched peter": "#3c7ade", "jamie": "#ffff00", "gary": "#a00a0a", "ryan": "#0000b3", "matt": "#ff6e1f", "darren": "#ff6eff", "mikayla": "#8200ff", "white": "#ffffff", "black": "#000000", "red": "#ee0000", "blue": "#0000ff", "green": "#00ff00", "grey": "#bbbbbb", "gold": "#db901c"
+_rel
+"mia": 0, "p1": 0, "peter": 0, "jamie": 0, "gary": 0, "ryan": 0, "matt": 0, "darren": 0, "mikayla": 0
+_next_bfly_effect
+0
+_items
+
+_gary_knows_name
+False
+code
+AAA1
+speaker
+mia
+s_col
+#000000
+f
+na
+button_text
+na
+button_colour
+#000000
+choice_codes
+
+button_codes
+
+question
