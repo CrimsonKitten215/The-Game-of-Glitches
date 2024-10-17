@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter.font import Font
+import os
 from other.question_tree import qtree, g
+
 
 class Hex:
 	"""
@@ -10,17 +12,17 @@ class Hex:
 
 	@staticmethod
 	def to_hex(number):
-		hex_string = ""
+		hexString = ""
 		while number > 0:
-			hex_string = Hex.hexnumerals[int(number % 16)] + hex_string
+			hexString = Hex.hexnumerals[int(number % 16)] + hexString
 			number //= 16
-		return hex_string
+		return hexString
 
 	@staticmethod
-	def to_dec(hex_string):
+	def to_dec(hexString):
 		offset = 1
 		total = 0
-		for i in hex_string[::-1]:
+		for i in hexString[::-1]:
 			total += offset * Hex.hexnumerals.index(i)
 			offset *= 16
 		return total
@@ -46,13 +48,16 @@ class Window:
 		self.__fg = "#ffffff"
 		self.__BUTTON_CONTRAST = 0.2
 		self.__button_bg = Hex.apply_contrast(self.__bg, self.__fg, self.__BUTTON_CONTRAST)
-		self.button_fg = Hex.apply_contrast(self.__fg, self.__bg, self.__BUTTON_CONTRAST)
+		self.__button_fg = Hex.apply_contrast(self.__fg, self.__bg, self.__BUTTON_CONTRAST)
+		self.__key = ""
+		self.__prev_key = ""
 
 		# setup window
 		self.__window = tk.Tk()
 		self.__window.title("The Game of Glitches")
 		self.__window.wm_iconphoto(True, tk.PhotoImage(file="other/icon.png"))
 		self.__window.config(bg=self.__bg)
+		self.__window.bind("<Key>", self.key_handler)
 
 		# fonts
 		self.__font = Font(
@@ -75,6 +80,32 @@ class Window:
 
 		# start the first question
 		self.show(initialQ)
+
+	def key_handler(self, event):
+		self.__key = event.char
+
+		# saving and loading checkpoints
+		if self.__key.upper() == self.__key and self.__key != "" and self.__key != "/":
+			if self.__prev_key == "s":
+				with open(f"save_slots/slot_{self.__key}.txt", "w") as file:
+					file.write(self.q.get_game_info())
+				print(f"\033[38;2;0;255;0mCHECKPOINT '{self.__key}' CREATED!")
+			else:
+				if os.path.exists(f"save_slots/slot_{self.__key}.txt"):
+					if self.__prev_key == "l":
+						with open(f"save_slots/slot_{self.__key}.txt", "r") as file:
+							try:
+								self.show(self.q.set_game_info(file.read().split("\n")))
+								print(f"\033[38;2;0;255;0mCHECKPOINT '{self.__key}' LOADED!")
+							except:
+								print("\033[38;2;255;0;0mFILE IS EMPTY!")
+					elif self.__prev_key == "d":
+						os.remove(f"save_slots/slot_{self.__key}.txt")
+						print(f"\033[38;2;0;255;0mCHECKPOINT '{self.__key}' DELETED!")
+				else:
+					print("\033[38;2;255;0;0mFILE DOES NOT EXIST!")
+
+		self.__prev_key = self.__key
 
 	def make_button(self, text, command, colour: str):
 		return tk.Button(self.__window, text=text, command=command, bg=self.__button_bg, fg=colour, font=self.__button_font)
@@ -115,6 +146,7 @@ class Window:
 				button = self.make_button(a.button_text, self.make_command(a), a.button_colour)
 				button.pack()
 				self.__buttons.append(button)
+		self.q = question
 
 	def start(self):
 		self.__window.mainloop()
