@@ -1,3 +1,5 @@
+# The Game of Glitches
+
 WARNING:
 
 There is bad language in this so if you use school wifi, hahaha die!
