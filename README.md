@@ -1,5 +1,8 @@
 # The Game of Glitches
 
+IMPORTANT INFO: Requires Mac OS
+
+
 WARNING:
 
 There is bad language in this so if you use school wifi, hahaha die!
