@@ -1,6 +1,6 @@
 # The Game of Glitches
 
-IMPORTANT INFO: Requires Mac OS
+IMPORTANT INFO: Requires Mac OS, but I'll add a Windows version in the future
 
 
 WARNING:
