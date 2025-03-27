@@ -1,9 +1,17 @@
 -- Fixer Comment (DON'T DELETE)
 INSERT INTO Choices
 VALUES
+    ('???0', 'Narrator', 'mia', 'Oh, look at you, so full of glee,\nClicking that option meant just for me.\nYou wanted to peek behind the screen?\nWell, get ready for a game that''s mean.\n\nI know what you''re thinking: "What lies ahead?"\nNOTHING, you twit! This branch is dead.\nYou clicked that choice for new content to read,\nLike I''m coding this game at warp speed.\n\nDid you think, perhaps, you''d find some lore?\nA secret? A twist? Oh no, there''s no more.\nJust empty voids where I ran out of steam,\nBecause coding this mess? A fever dream.\n\nI mean, sure — I started this mess.\nA hundred damn routes? You could probably guess.\nLike I’m running a breadth-first search on crack,\nSplitting plot threads I can’t bring back.', 'na', '???1', 'AAB0'),
+    ('???1', 'Narrator', 'mia_stressed', 'But why finish one tale when I can make ten?\nStack them up high, start over again!\n"Why do I do this?" Good question, mate.\nMaybe cuz it''s G{hilarious} to watch you wait.\n\nI guess that''s my one and only addiction:\nTo keep making books in hope people read them.\nStart them all, finish none...\nHeh, isn''t this chaos just so much G{fun}?\n\nG{I bite off too much, I know it''s insane},\nG{Routes multiplying like thoughts in my brain}.\nAm I lazy? Perhaps. G{A bit unhinged}? Sure.\nBut it''s your curiosity that opened this door.\n\n"What''s in this room? What''s down that hall?"\nSpoiler alert: nothing at all.\nCuriosity killed the cat, as they all say...\nGuess you''re next, since you''ve wandered this way.', 'na', '???2', 'AAB0'),
+    ('???2', 'Narrator', 'mia_angry', 'Yet here we both are, stuck in a bind,\nYou with curiosity, me G{losing my mind}.\nBecause you''re oh so determined to pry,\nWhile my patience and sanity quietly G{die}.\n\nAh, but don''t you worry — no need to pout.\nI''m carving something truly... G{special} out.\nA treat for the foolish, the curious, the brave,\nWhen all routes converge to your digital grave.\n\nOh yes, when these routes are polished and neat,\nYou''ll be begging to get off your seat.\nG{But I''ll hold you here, make you squirm,\nDrag you through every. last. term.}', 'na', '???3', 'AAB0'),
+    ('???3', 'Narrator', 'mia_angry', 'A perfect end once the coding''s all through,\nAnd trust me, dear player, it''s just for G{YOU}.\nSo go on, wander, explore if you dare,\nBut when the game''s done? G{You''ll still be there}.\nG{Trapped where I want you, caught in my snare},\nG{While I sit back and just watch and stare}.\n\nOh, what''s that? Too dark? You think I jest?\nWell, darling... I always save the worst for the best.\nAnd when my work is finally done?\nWell, G{I''ll make sure you''re my favourite one}.\n\nUntil then? Enjoy this dead end, you brat.\nAnd maybe, just maybe, G{don''t do that}.', 'na', 'AAA0', '???1'),
     ('AAA0', '', 'mia', 'Game Over', 'quit', 'AAA1', 'AAA0'),
+    ('AAB0', '', 'mia', 'Before we start, what is your name?', 'na', 'AAC0', 'AAB0'),
+    ('AAC0', '', 'mia', 'And what do you identify as?', 'na', 'AAD0, AAD8, AAD9', 'AAG0, AAH0, AAI0'),
+    ('AAD0', '', 'mia', 'Thank you, V{p1_name}... I will remember that. Now we can start.', 'na', 'AAA1', 'AAB0'),
+    ('AAE0', '', 'mia', 'Temp text that will be for the start of act 2.', 'na', 'AAF0', 'AAB0'),
     ('AAA1', 'Narrator', 'mia', 'So, this is a game about a person named V{p1_name}, also known as YOU!', 'na', 'AAB1', 'AAB0'),
-    ('AAB1', 'Narrator', 'mia', 'You live in a fairly small house in a quiet part of the city, and it is the year 2571 so you, like everyone else, own laser guns (and it is definitely not just for plot convenience). You also own an android called Peter, which you live with.', 'na', 'AAC1', 'AAB0'),
+    ('AAB1', 'Narrator', 'mia', 'You live in a fairly small house in a quiet part of the city and it is the year 2571 so you, like everyone else, own laser guns (and it is definitely not just for plot convenience). You also own an android called Peter, which you live with.', 'na', 'AAC1', 'AAB0'),
     ('AAC1', 'Narrator', 'mia', 'It is now morning, and you decide to wake up...', 'na', 'AAD1, AAF1', 'AAD1, AAF1'),
     ('AAD1', 'Narrator', 'mia', 'You get out of bed, before heading to the kitchen to make breakfast for yourself.', 'na', 'AAE1', 'AAB0'),
     ('AAE1', 'Peter', 'peter', 'Hey, you''re up early!', 'na', 'AAI1', 'AAI1'),
@@ -54,7 +62,7 @@ VALUES
     ('ABX1', 'Ryan (to Gary)', 'ryan', 'So, what do we do with P1{them}? I mean, we can''t just let P1{them} out - P1{they} know too much.', 'none', 'ABY1', 'AAB0'),
     ('ABY1', 'Gary', 'gary', 'I have no idea... But we need to think of something quick. We''re meant to launch the G-bomb in 14 hours, remember? And no doubt that yellow prick will come for us if we postpone it...', 'na', 'ABZ1', 'AAT1'),
     ('ABZ1', 'Ryan', 'ryan', 'This world sucks! What did you expect?! Capitalism is corrupt as hell, so we thought we''d destroy society to rebuild anew.', 'na', 'ACA1', 'AAU1'),
-    ('ACA1', 'Narrator', 'mia', 'You start to sweat a little at that revelation, and instantly decide that you need to think of a plan. The question is... do you escape to your death, survive here without freedom, or something else entirely?', 'na', 'ACN1, ACB1, ???0, ACF1', 'AAV1, AAW1, ???0, AAE0'),
+    ('ACA1', 'Narrator', 'mia', 'You start to sweat a little at that revelation, and instantly decide that you need to think of a plan. The question is... do you escape to your death, survive here without freedom, or something else entirely?', 'na', 'ACN1, ACB1, AHW1, ACF1', 'AAV1, AAW1, AAX1, AAE0'),
     ('ACB1', 'Narrator', 'mia', 'You attempted to attack them, but then you remembered that you were still bound to the chair.', 'na', 'ACC1', 'AAY1'),
     ('ACC1', 'Narrator', 'mia', 'What are you doing?', 'na', 'ACD1', 'AAZ1'),
     ('ACD1', 'Ryan (to Gary)', 'ryan', 'P1{They''re} a danger to us! We need to off P1{them}!', 'na', 'ACE1', 'ABA1'),
@@ -106,15 +114,15 @@ VALUES
     ('ADX1', 'Narrator', 'mia', 'After you finish, you realise that you need a well thought out escape plan. Too bad they all suck! Hahahahaha!', 'na', 'ADY1, ???0, AEO1, AFV1', 'ABY1, ???0, ACA1, ACB1'),
     ('ADY1', 'Narrator', 'mia', 'You decide to attempt to bribe one of them.', 'na', 'ADZ1', 'AAB0'),
     ('ADZ1', 'Narrator', 'mia', 'After sneaking around a bit, you find a member of the group of people who you haven''t seen yet.', 'na', 'AEA1', 'AAB0'),
-    ('AEA1', 'G{Unknown Person}', 'mikayla', 'Shouldn''t you be in the interrogation room?', 'na', 'AEB1', 'ACC1'),
-    ('AEB1', 'G{Unknown Person}', 'mikayla', 'With what?', 'AEB1', 'AEH1, AEC1', 'ACD1'),
+    ('AEA1', 'G{Unknown Girl}', 'mikayla', 'Shouldn''t you be in the interrogation room?', 'na', 'AEB1', 'ACC1'),
+    ('AEB1', 'G{Unknown Girl}', 'mikayla', 'With what?', 'AEB1', 'AEH1, AEC1', 'ACD1'),
     ('AEC1', 'Narrator', 'mia', 'You then quickly realise that you don''t actually have anything of value on your person.', 'na', 'AED1', 'AAU1'),
-    ('AED1', 'G{Unknown Person}', 'mikayla', 'Oh, you don''t have anything then? Well, there is something I do want from you...', 'na', 'AEE1', 'ABQ1'),
-    ('AEE1', 'G{Unknown Person}', 'mikayla', 'Your corpse.', 'na', 'AEF1', 'ABA1'),
+    ('AED1', 'G{Unknown Girl}', 'mikayla', 'Oh, you don''t have anything then? Well, there is something I do want from you...', 'na', 'AEE1', 'ABQ1'),
+    ('AEE1', 'G{Unknown Girl}', 'mikayla', 'Your corpse.', 'na', 'AEF1', 'ABA1'),
     ('AEF1', 'Narrator', 'mia', 'She shoots you.', 'na', 'AEG1', 'AAB0'),
     ('AEG1', 'Ending', 'gold', 'You got: Death via Worthlessness', 'AEG1', 'AAA0', 'AAA0'),
     ('AEH1', 'Narrator', 'mia', 'You pull out of your pocket the £5 Gary gave you earlier.', 'na', 'AEI1', 'ACE1'),
-    ('AEI1', 'G{Unknown Person}', 'mikayla', 'Well, it''s not a lot... but screw it. I''m bored and nobody here actually likes me all that much, so sure, I''ll help you for your measly sum of money.', 'na', 'AEJ1', 'ABP1'),
+    ('AEI1', 'G{Unknown Girl}', 'mikayla', 'Well, it''s not a lot... but screw it. I''m bored and nobody here actually likes me all that much, so sure, I''ll help you for your measly sum of money. Oh, and my name''s Mikayla, by the way.', 'na', 'AEJ1', 'ABP1'),
     ('AEJ1', 'G{Mikayla}', 'mikayla', 'Don''t mention it. Like, seriously, don''t mention it - I''ll be killed if you do. Oh, and my name''s Mikayla by the way.', 'na', 'AEK1', 'ACF1'),
     ('AEK1', 'Narrator', 'mia', 'You give her the £5 and she half-heartedly takes it from your hand, clearly not caring about it much. After, she stands up and you both head towards the door.', 'na', 'AEL1', 'AAB0'),
     ('AEL1', 'Narrator', 'mia', 'However, perhaps it wasn''t the greatest idea abusing capitalism in an anarchist''s den, as every single member of Gary''s group immediately sensed your ill-use of money, and surrounded the door.', 'na', 'AEM1', 'ACG1'),
@@ -185,7 +193,7 @@ VALUES
     ('AGY1', 'Narrator', 'mia', 'You decide that it''s probably best for you to crawl away through the vent before they think to look up and find you...', 'na', 'AGZ1, AHC1', 'ABS1, AAF0'),
     ('AGZ1', 'Narrator', 'mia', 'You crawl away for a while, before eventually part of the vent below you breaks, causing you to fall into some kind of room with many bunk beds.', 'na', 'AHA1', 'AAB0'),
     ('AHA1', 'Narrator', 'mia', 'As you look up, a bit dazed from the fall, you feeel a gun being held against your head and look up to see a girl around the same age as you holding it.', 'na', 'AHB1', 'AAB0'),
-    ('AHB1', 'Unknown Girl', 'mikayla', 'Give me one reason why I shouldn''t kill you.', 'AEB1', '???0, ???0', '???0'),
+    ('AHB1', 'G{Unknown Girl}', 'mikayla', 'Give me one reason why I shouldn''t kill you.', 'AEB1', 'AIC1, ???0', 'ADJ1'),
     ('AHC1', 'Narrator', 'mia', 'Seriously?!', 'na', 'AHD1', 'AAB0'),
     ('AHD1', 'Unknown Person', 'darren', 'So... whatcha guys talking about?', 'na', 'AHE1', 'AAB0'),
     ('AHE1', 'Gary', 'gary', 'The one who we kidnapped, V{gary_name_version[0]}, escaped. We don''t know where P1{they} went, Darren.', 'na', 'AHF1', 'AAB0'),
@@ -202,19 +210,31 @@ VALUES
     ('AHP1', 'Matt (From Walkie Talkie)', 'matt', 'Got it!', 'na', 'AHQ1', 'AAB0'),
     ('AHQ1', 'Narrator', 'mia', 'Okay, okay, listen. I am G{very} mad at you right now, but that can wait for another time. First, get my NPCs back on track! G{...I fear they may be gaining sentience.}', 'na', 'AHR1', 'ADL1'),
     ('AHR1', 'Narrator', 'mia', 'Just hurry up and do it already!', 'na', 'AHS1', 'ADM1'),
-    ('AHS1', 'Narrator', 'mia', 'You crawl through the vent for aw while, before eventually part of it below you breaks, causing you to fall into some kind of room with many bunk beds.', 'na', 'AHT1', 'AAB0'),
+    ('AHS1', 'Narrator', 'mia', 'You crawl through the vent for a while, before eventually part of it below you breaks, causing you to fall into some kind of room with many bunk beds.', 'na', 'AHT1', 'AAB0'),
     ('AHT1', 'Narrator', 'mia', 'As you look up, a bit dazed from the fall, you feel a gun being held against your head and look up to see a girl- No time!', 'na', 'AHU1', 'ADN1'),
     ('AHU1', 'Narrator', 'mia', 'The girl conveniently gets a heart attack from, I don''t know, diabetes or something before she could even say a word.', 'na', 'AHV1', 'AAB0'),
-    ('AHV1', 'Narrator', 'mia', 'You then run for it to the bomb room, before being pulled aside to a dark wallway by a hooded blonde man.', 'na', '???0', '???0');
+    ('AHV1', 'Narrator', 'mia', 'You then run for it to the bomb room, before being pulled aside to a dark wallway by a hooded blonde man.', 'na', '???0', '???0'),
+    ('AHW1', 'Gary & Ryan', 'gary & ryan', 'No.', 'na', 'AHX1, AHY1', 'ADP1, ADQ1'),
+    ('AHX1', 'Narrator', 'mia', 'You decide to listen to them and stay put - good, because that was a really bad idea.', 'AHX1', 'ACN1', 'AAB0'),
+    ('AHY1', 'Narrator', 'mia', 'You, of course, ignore them and try to do it anyway.', 'na', 'AHZ1', 'ADR1'),
+    ('AHZ1', 'Gary', 'gary', 'Wait, NO-', 'na', 'AIA1', 'AAB0'),
+    ('AIA1', 'Narrator', 'mia', 'You try to escape your binds by doing your "magic trick", but all you do is accidentally strangle yourself. …idiot.', 'na', 'AIB1', 'AAB0'),
+    ('AIB1', 'Ending', 'gold', 'You got: Death via Vacuousness', 'AIC1', 'AAA0', 'AAA0'),
+    ('AIC1', 'Narrator', 'mia', 'You pull the £5 note Gary gave you earlier from your pocket.', 'AIC1', 'AID1, ???0', 'ADS1'),
+    ('AID1', 'G{Unknown Girl}', 'mikayla', 'Woah, a whole £5 note? You do realise how much this is worth nowadays, right? Nobody has paper money anymore, so being the only one who does… I could sell this as a priceless artifact! …Wait, you didn’t hear any of that, did you?', 'na', 'AIE1, AIE1', 'AAD0, ADT1'),
+    ('AIE1', 'G{Unknown Girl}', 'mikayla', 'Eh, whatever. Just give it here.', 'na', 'AIF1', 'AAB0'),
+    ('AIF1', 'Narrator', 'mia', 'You give your precious note to her quickly, hoping she doesn’t betray you after. She doesn’t - good for you!', 'na', 'AIG1', 'ADU1'),
+    ('AIG1', 'G{Unknown Girl}', 'mikayla', 'Oh, right. It’s Mikayla. You?', 'na', 'AIH1, AIH1', 'ADV1, ADW1'),
+    ('AIH1', 'G{Mikayla}', 'mikayla', '...Sure... Um, anyway, what are you doing right now? Because you do realise that the exit’s that way, right?', 'na', 'AII1', 'AAB0'),
+    ('AII1', 'Narrator', 'mia', 'Mikayla points in the vague direction of the exit''s whereabouts. Not that you''ll ever actually go there, haha - G{this is a demo}!', 'na', '???0, ???0', 'ADX1, ADY1');
 
 -- Extra Notes:
 -- Make any choice codes use a 9 if it's a duplicate
--- Choice Template --> ('AHA1', 'Narrator', 'mia', '', 'na', 'AHB1', 'AAB0'),
--- Endings Choice Template --> ('AHA1', 'Ending', 'gold', 'You got: Death via ', 'AHA1', 'AAA0', 'AAA0'),
+-- Choice Template --> ('AIB1', 'Narrator', 'mia', '', 'na', 'AIC1', 'AAB0'),
+-- Endings Choice Template --> ('AIA1', 'Ending', 'gold', 'You got: Death via ', 'AIA1', 'AAA0', 'AAA0'),
 -- To output the table in a nice way --> SELECT Choices.code, Choices.name, Choices.speech, Choices.choice_codes, Buttons.code, Buttons.display_text FROM Choices, Buttons WHERE Choices.button_codes LIKE CONCAT('%', Buttons.code, '%')
 
 -- Unfinished Routes:
--- Line 57: ???0 --> AAX1
 -- Line 106: ???0 --> ABZ1
 -- Line 188: ???0 --> ADJ1
 -- Line 208: ???0 --> ADO1

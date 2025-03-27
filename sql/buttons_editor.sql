@@ -1,14 +1,18 @@
 -- Fixer Comment (DON'T DELETE)
 INSERT INTO Buttons
 VALUES
+    ('???0', 'ERROR: ROUTE INCOMPLETE! PICK SOMETHING ELSE OR DIE!', 'green'),
+    ('???1', 'ERROR: ROUTE INSTABILITY! END GAME TO AVOID PERMANENT DAMAGE!', 'green'),
     ('AAA0', 'Game Over', 'red'),
     ('AAB0', 'Continue', 'grey'),
     ('AAC0', '"Yes."', 'white'),
     ('AAD0', '"No."', 'white'),
     ('AAE0', 'CENSORED', 'red'),
     ('AAF0', 'Don''t.', 'white'),
-    ('???0', 'ERROR: ROUTE INCOMPLETE! PICK SOMETHING ELSE OR DIE!', 'green'),
-    ('AAG0', '"Why?"', 'white'),
+    ('AAG0', 'She/her', 'white'),
+    ('AAH0', 'He/him', 'white'),
+    ('AAI0', 'They/them', 'white'),
+    ('AAJ0', '"Why?"', 'white'),
     ('AAA1', '"Oi, watch it!"', 'white'),
     ('AAB1', '"Hey, I''ll sue you for that!"', 'white'),
     ('AAC1', '"Sounds good."', 'white'),
@@ -101,7 +105,17 @@ VALUES
     ('ADL1', '"Wait what-?"', 'white'),
     ('ADM1', '"Fine."', 'white'),
     ('ADN1', '"Rude..."', 'white'),
-    ('ADO1', '"Hey, let go of-"', 'white');
+    ('ADO1', '"Hey, let go of-"', 'white'),
+    ('ADP1', 'Listen to them.', 'white'),
+    ('ADQ1', 'Ignore them.', 'white'),
+    ('ADR1', '"Watch this!"', 'white'),
+    ('ADS1', '"I have £5..."', 'white'),
+    ('ADT1', '"What''s an artifact?"', 'white'),
+    ('ADU1', '"So... what''s your name?"', 'white'),
+    ('ADV1', '"It''s definitely V{p1_name}."', 'white'),
+    ('ADW1', '"It''s definitely not V{p1_name}."', 'white'),
+    ('ADX1', '"Yeah, but I kinda want to stop the destruction of LITERALLY EVERYTHING, so..."', 'white'),
+    ('ADY1', '"I''d go there, but the narrator says no."', 'white');
 
 -- Extra Notes:
--- Button Template --> ('ADC1', '', 'white'),
+-- Button Template --> ('ADZ1', '', 'white'),

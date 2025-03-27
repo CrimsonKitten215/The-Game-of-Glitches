@@ -1,8 +1,11 @@
 import tkinter as tk
 from tkinter.font import Font
+from tkinter import ttk
 import tkmacosx as tkm
+from PIL import Image, ImageTk
 import os
-from other.question_tree import qtree, g
+from useful_code.question_tree import qtree, g
+import useful_code.type_convertor as tc
 
 
 class Hex:
@@ -83,41 +86,13 @@ class Window:
 		self._buttons = []
 		self._spaces = []
 
-	def key_handler(self, event):
-		self._key = event.char
-		self._prev_key = self._key
-
 	def make_button(self, text, command, colour: str):
 		return tkm.Button(self._window, text=text, command=command, bg=self._button_bg, activebackground=self._button_bg, fg=colour, font=self._button_font)
 
-	def make_command(self, question):
-		return lambda: self.show(question)
-
-	def show(self, question):
-		# clearing old screen
-		if len(self._buttons) > 0:
-			for button in self._buttons:
-				button.destroy()
-			for space in self._spaces:
-				space.destroy()
-
-		# creating new screen
-		if len(question.questions) == 0:
-			self.speaker.config(text=question.speaker, fg=question.s_col)
-			self.question.config(text=question.question)
-			tk.Label(self._window, text="", bg=self._bg, fg=self._fg, font=("Consolas", 10)).pack()
-			self.make_button("Game Over", exit, "#ee0000").pack()
-		else:
-			self.speaker.config(text=question.speaker, fg=question.s_col)
-			self.question.config(text=question.question)
-			for (q, a) in question.questions.items():
-				space = tk.Label(self._window, text="", bg=self._bg, fg=self._fg, font=("Consolas", 10))
-				space.pack()
-				self._spaces.append(space)
-				button = self.make_button(a.button_text, self.make_command(a), a.button_colour)
-				button.pack()
-				self._buttons.append(button)
-		self.q = question
+	# unused for now
+	def key_handler(self, event):
+		self._key = event.char
+		self._prev_key = self._key
 
 	def start(self):
 		self._window.focus_force()
@@ -201,7 +176,7 @@ class Menu(Window):
 		else:
 			with open(f"save_slots/slot_{slot}.txt", "w") as file:
 				file.write(self.__game.q.get_game_info())
-			self.__save_win.message.config(text=f'File "slot_{slot}" saved succefully.', fg="#BB0000")
+			self.__save_win.message.config(text=f'File "slot_{slot}" saved succefully.', fg="#00BB00")
 			self.__save_win.entry.delete(0, "end")
 
 	def _load(self):
@@ -225,7 +200,7 @@ class Menu(Window):
 			tkm.Button(self.__load_win._window, text="Load", command=self.__load_save_slot, fg=self._button_fg, bg=self._button_bg, font=self._button_font).pack()
 
 	def __load_save_slot(self):
-		selected = self.__load_win._selected.get()
+		selected = self.__load_win._selected.get() + ".txt"
 		if os.path.exists(f"save_slots/" + selected):
 			with open(f"save_slots/" + selected, "r") as file:
 				try:
@@ -240,11 +215,43 @@ class Menu(Window):
 		except:
 			self.__map_win = Window("TGG Choices Map", "assets/icon.png", False)
 
-			# making the flowchart
-			canvas = tk.Canvas(self.__map_win._window, width=300, height=300, bg=self._bg, highlightthickness=0)
-			canvas.pack(fill="both", expand=True)
-			img = tk.PhotoImage(file="assets/placeholder.png")
-			canvas.create_image(20, 20, anchor="nw", image=img)
+			# act checking
+			act = g.get_act()
+			if act == 0 or act == 4:
+				# failsafe if in-between acts
+				frame = tk.Frame(self.__map_win._window, width=300, height=300)
+				frame.pack(expand=True, fill="both")
+				canvas = tk.Canvas(frame, width=300, height=300, bg=self._bg, highlightthickness=0)
+				canvas.pack(fill="both", expand=True)
+				canvas.create_image(20, 20, anchor="nw", image=ImageTk.PhotoImage(Image.open("assets/map_unavailable.png")))
+			else:
+				# making the images
+				images = []
+				image = Image.open(f"assets/choices_map{act}/choices_map.png")
+				images.append(ImageTk.PhotoImage(image))
+
+				with open(f"memory/endings_{act}.txt", "r") as file:
+					info = file.read().split("\n")
+				for i in range(0, len(info), 2):
+					if info[i + 1] != "0":
+						image = Image.open(f"assets/choices_map{act}/{info[i].lower().replace(" ", "_")}.png")
+						images.append(ImageTk.PhotoImage(image))
+
+				# making the canvas
+				frame = tk.Frame(self.__map_win._window, width=300, height=300)
+				frame.pack(expand=True, fill="both")
+				scrollbar_x = ttk.Scrollbar(frame, orient="horizontal")
+				scrollbar_x.pack(side="bottom", fill="x")
+				scrollbar_y = ttk.Scrollbar(frame)
+				scrollbar_y.pack(side="right", fill="y")
+				canvas = tk.Canvas(frame, width=300, height=300, bg=self._bg, highlightthickness=0, scrollregion=(0, 0, images[0].width() + 20, images[0].height() + 20))
+				canvas.pack(fill="both", expand=True)
+				canvas.config(xscrollcommand=scrollbar_x.set, yscrollcommand=scrollbar_y.set)
+				scrollbar_x.config(command=canvas.xview)
+				scrollbar_y.config(command=canvas.yview)
+
+				for i in images:
+					canvas.create_image(20, 20, anchor="nw", image=i)
 			tk.mainloop()
 
 	def _endings_list(self):
@@ -260,11 +267,11 @@ class Menu(Window):
 			self.__endings_win = Window("TGG Endings List", "assets/icon.png", False)
 			tk.Label(self.__endings_win._window, text="", bg=self._bg).pack()
 			tk.Label(self.__endings_win._window, text="Endings", font=self._font, bg=self._bg).pack()
-			scrollbar = tk.Scrollbar(self.__endings_win._window, highlightcolor="#FFFFFF")
+			scrollbar = ttk.Scrollbar(self.__endings_win._window)
 			scrollbar.pack(side="right", fill="y")
 			end_list = tk.Listbox(self.__endings_win._window, font=lesser_font, width=50, height=30, bg=self._bg, activestyle="none", exportselection=0)
 			end_list.pack(fill="y")
-			with open("memory/deaths_1.txt", "r") as file:
+			with open(f"memory/endings_{g.get_act()}.txt", "r") as file:
 				info = file.read().split("\n")
 
 			# formatting the endings list
@@ -293,14 +300,16 @@ class Game(Window):
 		self.show(initialQ)
 
 	def show(self, question):
+		self.q = question
+
 		# running the function
 		try:
-			getattr(g, question.f)()
+			getattr(g, self.q.f)()
 		except:
 			pass
-		if question.f == "quit":
+		if self.q.f == "quit":
 			self._window.destroy()
-		g.generate(question)
+		g.generate(self.q)
 
 		# clearing old screen
 		if len(self._buttons) > 0:
@@ -310,22 +319,90 @@ class Game(Window):
 				space.destroy()
 
 		# creating new screen
-		if len(question.questions) == 0:
-			self.speaker.config(text=question.speaker, fg=question.s_col)
-			self.question.config(text=question.question)
+		if len(self.q.questions) == 0:
+			self.speaker.config(text=self.q.speaker, fg=self.q.s_col)
+			self.question.config(text=self.q.question)
 			tk.Label(self._window, text="", bg=self._bg, fg=self._fg, font=("Consolas", 10)).pack()
-			self.make_button("Game Over", exit, "#ee0000").pack()
+			self.make_button("Game Over", exit, "#EE0000").pack()
 		else:
-			self.speaker.config(text=question.speaker, fg=question.s_col)
-			self.question.config(text=question.question)
-			for (q, a) in question.questions.items():
-				space = tk.Label(self._window, text="", bg=self._bg, fg=self._fg, font=("Consolas", 10))
-				space.pack()
-				self._spaces.append(space)
-				button = self.make_button(a.button_text, self.make_command(a), a.button_colour)
+			self.speaker.config(text=self.q.speaker, fg=self.q.s_col)
+			self.question.config(text=self.q.question)
+			if self.q.code == "AAB0" or self.q.code == "AAE0":
+				self._add_space()
+				self.entry = tk.Entry(self._window)
+				self.entry.pack()
+				self._add_space()
+				button = self.make_button("Continue", self.__make_general_command(self.get_entry, self.q.questions[list(self.q.questions)[0]]), "grey")
 				button.pack()
 				self._buttons.append(button)
-		self.q = question
+				self._add_space()
+				self.message = tk.Label(self._window, text="", bg=self._bg, fg=self._fg, font=self._button_font)
+				self.message.pack()
+			else:
+				for (q, a) in self.q.questions.items():
+					self._add_space()
+					if self.q.code == "AAC0":
+						button = self.make_button(a.button_text, self.__make_general_command(self.__set_gender, a), a.button_colour)
+					elif self.q.code == "AAD0":
+						button = self.make_button("Continue", self.make_command(a), g.col["grey"])
+					else:
+						button = self.make_button(a.button_text, self.make_command(a), a.button_colour)
+					button.pack()
+					self._buttons.append(button)
+
+		if self.q.speaker[0] == ":":
+			self.speaker.config(text="")
+
+	def _add_space(self):
+		space = tk.Label(self._window, text="", bg=self._bg, fg=self._fg, font=self._button_font)
+		space.pack()
+		self._spaces.append(space)
+
+	def __set_gender(self, question):
+		player = (g.get_act() // 4) + 1
+		if question.button_text == "She/her":
+			temp = "f"
+		elif question.button_text == "He/him":
+			temp = "m"
+		else:
+			temp = "n"
+
+		g.transgenderfy(temp, player)
+		self.set_info("memory/player_info.txt", 3, temp)
+		g.set_act(player)
+		self.set_info("memory/carry_over_info.txt", 1, player)
+		self.show(question)
+
+	def make_command(self, question):
+		return lambda: self.show(question)
+
+	def __make_general_command(self, command, input):
+		return lambda: command(input)
+
+	def get_entry(self, question):
+		info = self.entry.get()
+		if info == "":
+			self.message.config(text="Please do not use an empty name.", fg="#BB0000")
+		elif any(char.upper() == char.lower() and not char in " '\"1234567890" for char in info):
+			self.message.config(text="Please do not include special characters.", fg="#BB0000")
+		else:
+			if g.get_act() <= 1:
+				g.set_p1_name(info)
+				self.set_info("memory/player_info.txt", 1, info)
+			else:
+				g.set_p2_name(info)
+				self.set_info("memory/player_info.txt", 5, info)
+			self.entry.destroy()
+			self.message.destroy()
+			self.show(question)
+
+	@staticmethod
+	def set_info(file_name: str, line: int, info: str):
+		with open(file_name, "r") as file:
+			text = file.read().split("\n")
+		text[line] = info
+		with open(file_name, "w") as file:
+			file.write(tc.unlistify(text).replace(", ", "\n"))
 
 
 Menu().start()
