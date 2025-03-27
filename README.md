@@ -2,8 +2,16 @@
 
 IMPORTANT INFO: Requires Mac OS, but I'll add a Windows version in the future
 
+## DESCRIPTION:
 
-WARNING:
+This is just a little crack project of random crazy storylines, but it's funny, I promise!
+
+It's a text-based adventure game with countless endings in it, and it uses a tkinter UI because it's cooler than console despite being a pain to code.
+
+So far, it's still just a WIP, so some of the routes aren't finished yet, and some of the story may be tweaked in the future. Since there's only act 1 coded so far, it's a bit more like a showcase than a full game, so some of the mechanics haven't been fully utilised yet.
+
+
+## WARNING:
 
 There is bad language in this so if you use school wifi, hahaha die!
 
@@ -12,7 +20,7 @@ Also, there are some stupid jokes in there. Ignore those - they were probably ma
 Finally, if you see something that looks like what an insane person would write, that's for the character (the narrator is canonically a sadist and the player(s) are canonically sociopaths). Don't worry, I myself am NOT a sociopath... probably.
 
 
-CREDITS:
+## CREDITS:
 
 A big thank you to one of my old coding teachers, who's name will not be mentioned for privacy reasons, for giving me the original code for the UI that this game uses, the original version of the question tree class, etc. You didn't need to do that, but just know that I greatly appreciate it if you ever see this - tkinter is horrible and annoying, and I'd probably give up using it without that help.
 
